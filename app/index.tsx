@@ -1,5 +1,6 @@
+import { Link } from "expo-router"
 import React from "react"
-import { StatusBar } from "react-native"
+import { Text } from "~/components/ui/text"
 import Onboarding from "@/components/Onboarding"
 
 const DATA = [
@@ -26,17 +27,9 @@ const DATA = [
 ]
 
 const Index = () => {
-	const handleSkip = () => {
-		console.log("Onboarding skipped")
-	}
-
 	return (
 		<>
-			<Onboarding
-				data={DATA}
-				onSkip={handleSkip}
-			/>
-			<StatusBar className="bg-gray-500" />
+			<Onboarding data={DATA} />
 		</>
 	)
 }

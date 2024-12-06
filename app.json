@@ -33,12 +33,14 @@
 					"backgroundColor": "#ffffff"
 				}
 			],
-			"expo-font",
-			{
-				"fonts": [
-					"node_modules/@expo-google-fonts/poppins/Poppins_400Regular.ttf"
-				]
-			}
+			[
+				"expo-font",
+				{
+					"fonts": [
+						"node_modules/@expo-google-fonts/poppins/Poppins_400Regular.ttf"
+					]
+				}
+			]
 		],
 		"experiments": {
 			"typedRoutes": true
