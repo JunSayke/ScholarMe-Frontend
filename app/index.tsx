@@ -1,7 +1,6 @@
-import { Link } from "expo-router"
 import React from "react"
-import { Text } from "~/components/ui/text"
 import Onboarding from "@/components/Onboarding"
+import OnboardingTest from "@/components/OnboardingTest";
 
 const DATA = [
 	{
@@ -18,6 +17,8 @@ const DATA = [
 		image: "https://picsum.photos/seed/picsum/500/500",
 	},
 	{
+
+
 		id: "3",
 		title: "Create your own \nstudy plan",
 		subtitle:
@@ -30,6 +31,7 @@ const Index = () => {
 	return (
 		<>
 			<Onboarding data={DATA} />
+			<OnboardingTest data={DATA} />
 		</>
 	)
 }
