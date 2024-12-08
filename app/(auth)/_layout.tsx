@@ -31,12 +31,12 @@ export {
 // Prevent the splash screen from auto-hiding before getting the color scheme.
 SplashScreen.preventAutoHideAsync()
 
-export default function RootLayout() {
+const Layout = ()  => {
 	const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme()
 	const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false)
 
 	React.useEffect(() => {
-		;(async () => {
+		; (async () => {
 			const theme = await AsyncStorage.getItem("theme")
 			if (Platform.OS === "web") {
 				// Adds the background color to the html element to prevent white background on overscroll.
@@ -69,21 +69,20 @@ export default function RootLayout() {
 			<StatusBar style={isDarkColorScheme ? "light" : "dark"} />
 			<Stack>
 				<Stack.Screen
-					name="index"
+					name="welcome"
 					options={{ headerShown: false }}
 				/>
 				<Stack.Screen
-					name="(auth)"
+					name="signup"
 					options={{ headerShown: false }}
 				/>
 				<Stack.Screen
-					name="(root)"
+					name="signin"
 					options={{ headerShown: false }}
-				/>
-				<Stack.Screen
-					name="+not-found"
 				/>
 			</Stack>
 		</ThemeProvider>
 	)
 }
+
+export default Layout;
