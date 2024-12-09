@@ -3,14 +3,14 @@ import { SafeAreaView } from "react-native"
 import { Text } from "~/components/ui/text"
 import Onboarding from "@/components/Onboarding"
 
-const FlashcardSet = () => {
+const Flashcards = () => {
 	return (
 		<>
 			<SafeAreaView>
-				<Text>Flashcard Sets</Text>
+				<Text>Flashcards</Text>
 			</SafeAreaView>
 		</>
 	);
 }
 
-export default FlashcardSet
+export default Flashcards
