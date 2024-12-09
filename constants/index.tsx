@@ -6,6 +6,10 @@ import navhome from "@/assets/images/nav-home.png";
 import navflashcard from "@/assets/images/nav-flashcard.png";
 import navprofile from "@/assets/images/nav-profile.png";
 
+import icondefault from "@/assets/images/default-user-icon.png"
+
+import cardplus from "@/assets/images/cardplus.png"
+
 import { router } from "expo-router";
 import React from "react";
 import { SafeAreaView } from "react-native";
@@ -15,6 +19,8 @@ export const icons = {
   navhome,
   navflashcard,
   navprofile,
+  cardplus,
+  icondefault,
 };
 
 const onboarding = [

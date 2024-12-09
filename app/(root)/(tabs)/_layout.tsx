@@ -1,14 +1,12 @@
 /* eslint-disable no-unused-expressions */
-import { Tabs } from "expo-router";
+import { TouchableOpacity } from 'react-native';
+import { Link, Tabs } from "expo-router";
 import React from "react";
 import {
   Image,
   ImageSourcePropType,
-  Platform,
-  StatusBar,
   View,
 } from "react-native";
-import { useColorScheme } from "~/lib/useColorScheme";
 
 import { icons } from "@/constants";
 
@@ -71,9 +69,18 @@ const Layout = () => {
         name="flashcards"
         options={{
           title: "Flashcards",
-          headerShown: false,
+          headerStyle: {
+            backgroundColor: '#3D5CFF',
+          },
           tabBarIcon: ({ focused }) => (
             <TabIcon focused={focused} source={icons.navflashcard} />
+          ),
+          headerRight: () => (
+            <Link href={'/'} asChild>
+              <TouchableOpacity style={{ marginRight: 10 }}>
+                <Image source={icons.cardplus} tintColor="white" className="w-7 h-7" />
+              </TouchableOpacity>
+            </Link>
           ),
         }}
       />
