@@ -72,6 +72,12 @@ export default function RootLayout() {
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(root)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
+
+        {/* modals */}
+        <Stack.Screen name="(modals)/set/[id]" 
+          options={{ 
+          presentation: 'modal', 
+          title: '' }} />
       </Stack>
     </ThemeProvider>
   );

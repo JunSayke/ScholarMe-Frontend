@@ -3,14 +3,14 @@
 //
 // INTERFACES
 //
-export interface FlashcardDeck {
+// export interface FlashcardDeck {
 
-}
+// }
   
-export interface Flashcard {
+// export interface Flashcard {
 
-}
+// }
 
-export interface Choice {
+// export interface Choice {
 
-}
+// }

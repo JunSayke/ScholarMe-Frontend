@@ -2,7 +2,7 @@ import React from "react";
 import { View, SafeAreaView, TouchableOpacity, Image } from "react-native";
 import { Text } from "~/components/ui/text";
 import { icons } from "@/constants";
-import { Redirect, router } from "expo-router";
+import { Redirect, router, Link } from "expo-router";
 
 const Home = () => {
   return (
@@ -22,8 +22,13 @@ const Home = () => {
           </View>
         </View>
 
-        <SafeAreaView className="h-3/4 flex items-center justify-center">
-          <Text className="text-5xl">We ran out of time :)</Text>
+        <SafeAreaView className="h-full pt-5 flex items-center">
+          <View className="w-11/12 h-24 bg-[#2F2F42] rounded-3xl shadow-lg elevation-5 flex flex-row items-center justify-between ">
+              <Text className="pl-5 text-3xl">Your Flashcards</Text>
+              <TouchableOpacity>
+                <Image source={icons.cardplus} tintColor={'white'} className="w-12 h-12 mr-5"/>
+              </TouchableOpacity>
+          </View>
         </SafeAreaView>
       </SafeAreaView>
     </>
