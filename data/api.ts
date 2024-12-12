@@ -119,3 +119,14 @@ export interface UserSession {
     token: string;
     user: UserAccountReadOnlyDto;
 }
+
+export interface ErrorResponse {
+  title: string;
+  status: number;
+  detail: string;
+  instance: string;
+  // errors are populated when the server returns model validation errors
+  errors?: {
+    [key: string]: string[];
+  };
+}

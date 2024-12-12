@@ -11,8 +11,9 @@ import {
     FlashcardChoiceCreateDto,
     FlashcardChoiceReadOnlyDto,
     FlashcardChoiceUpdateDto,
-    UserSession
+    UserSession, ErrorResponse
 } from './api';
+import {AxiosError} from "axios";
 
 // User Accounts
 export const signIn = (userSignInDto: UserAccountSignInDto) => api.post<UserSession>('/useraccounts/signin', userSignInDto);
@@ -38,3 +39,14 @@ export const getChoices = (cardId: number) => api.get<FlashcardChoiceReadOnlyDto
 export const getChoiceById = (choiceId: number) => api.get<FlashcardChoiceReadOnlyDto>(`/choices/${choiceId}`);
 export const updateChoice = (choiceId: number, choiceUpdateDto: FlashcardChoiceUpdateDto) => api.put<FlashcardChoiceReadOnlyDto>(`/choices/${choiceId}`, choiceUpdateDto);
 export const deleteChoice = (choiceId: number) => api.delete<void>(`/choices/${choiceId}`);
+
+// Used to check if an error is an AxiosError and if it has the expected structure
+export const handleAxiosError = (error: AxiosError): ErrorResponse | null => {
+    if (error.response && error.response.data) {
+        const data = error.response.data as ErrorResponse;
+        if (data.title && data.status && data.detail && data.instance) {
+          return data;
+        }
+    }
+    return null;
+};

@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
+import {ErrorResponse} from "@/data/api";
 
 const api = axios.create({
     baseURL: 'https://localhost:7011/api',
@@ -9,4 +10,3 @@ const api = axios.create({
 });
 
 export default api;
-
