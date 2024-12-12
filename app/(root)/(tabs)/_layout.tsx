@@ -69,18 +69,9 @@ const Layout = () => {
         name="flashcards"
         options={{
           title: "Flashcards",
-          headerStyle: {
-            backgroundColor: '#3D5CFF',
-          },
+          headerShown: false,
           tabBarIcon: ({ focused }) => (
             <TabIcon focused={focused} source={icons.navflashcard} />
-          ),
-          headerRight: () => (
-            <Link href={'/'} asChild>
-              <TouchableOpacity style={{ marginRight: 10 }}>
-                <Image source={icons.cardplus} tintColor="white" className="w-7 h-7" />
-              </TouchableOpacity>
-            </Link>
           ),
         }}
       />
