@@ -1,12 +1,14 @@
-import { useAuth } from "@/components/AuthContext";
-import { Redirect } from "expo-router";
+import {useAuth} from "@/components/AuthContext";
 import React from "react";
+import {Redirect} from "expo-router";
 
 const Index = () => {
-  const { authState } = useAuth();
+    const {authState} = useAuth();
 
-  // return authState?.authenticated ? (<Redirect href="/home" />) : (<Redirect href="/welcome"/>);
-  return <Redirect href="/(root)/(tabs)/home" />;
+    console.log("Root index mounted")
+
+    return authState?.authenticated ? (<Redirect href="/(root)/(tabs)/home" />) : (<Redirect href="/(auth)/welcome"/>);
 };
 
 export default Index;
+

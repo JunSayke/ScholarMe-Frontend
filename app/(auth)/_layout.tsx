@@ -1,7 +1,14 @@
 import React from 'react';
-import {Stack} from "expo-router";
+import {Redirect, Stack} from "expo-router";
+import {useAuth} from "@/components/AuthContext";
 
 const layout = () => {
+    const {authState} = useAuth();
+
+    if (authState?.authenticated) {
+        return <Redirect href="/(root)/(tabs)/home"/>
+    }
+
     return (
         <Stack>
             <Stack.Screen name="welcome" options={{headerShown: false}}/>
