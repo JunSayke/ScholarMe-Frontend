@@ -65,6 +65,8 @@ export default function RootLayout() {
     return null;
   }
 
+  console.log("Root Layout has been initialized.");
+
   return (
     <AuthProvider>
       <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
