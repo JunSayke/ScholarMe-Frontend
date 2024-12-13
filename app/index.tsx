@@ -3,10 +3,10 @@ import { Redirect } from "expo-router";
 import React from "react";
 
 const Index = () => {
-  //Change this back to /(auth)/welcome
   const { authState } = useAuth();
 
-  return authState?.authenticated ? (<Redirect href="/home" />) : (<Redirect href="/signin"/>);
+  // return authState?.authenticated ? (<Redirect href="/home" />) : (<Redirect href="/welcome"/>);
+  return <Redirect href="/(root)/(tabs)/home" />;
 };
 
 export default Index;
