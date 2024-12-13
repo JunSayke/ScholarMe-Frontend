@@ -82,6 +82,16 @@ export default function RootLayout() {
             options={{ 
             presentation: 'modal', 
             title: '' }} />
+            
+          <Stack.Screen name="(modals)/set/edit/[id]" 
+            options={{ 
+            presentation: 'modal', 
+            title: '' }} />
+
+          <Stack.Screen name="(modals)/set/edit/card/[id]" 
+            options={{ 
+            presentation: 'modal', 
+            title: '' }} />
         </Stack>
       </ThemeProvider>
     </AuthProvider>
