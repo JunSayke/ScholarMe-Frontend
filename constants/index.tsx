@@ -51,14 +51,14 @@ const onboarding = [
           className="px-20 mx-1 mt-10"
           title="Sign in"
           onPress={() => {
-            router.replace("/(auth)/sign-in");
+            router.replace("/(auth)/signin");
           }}
         />
         <CustomButton
           className="px-20 mx-1 mt-10"
           title="Sign up"
           onPress={() => {
-            router.replace("/(auth)/sign-up");
+            router.replace("/(auth)/signup");
           }}
         />
       </SafeAreaView>
