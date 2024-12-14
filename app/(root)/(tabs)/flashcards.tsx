@@ -12,30 +12,32 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'expo-router';
 
 import { FlashcardDeck } from '@/data/temporary';
+import { getDecks } from '@/data/api-routes';
+import { FlashcardDeckReadOnlyDto } from '@/data/api';
 
 const Page = () => {
-  const [sets, setSets] = useState<Set[]>([]);
+  const [decks, setDecks] = useState<FlashcardDeckReadOnlyDto[]>([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
     // IMPLEMENT WHEN API IS ADDED
     useEffect(() => {
-      loadSets();
+      loadDecks();
     }, []);
 
-    const loadSets = async () => {
-        const data = FlashcardDeck
-        setSets(data)
+    const loadDecks = async () => {
+        const response = await getDecks()
+        setDecks(response.data)
     }
 
     const renderSetRow: ListRenderItem<Set> = ({ item }) => {
       // console.log(item["FlashcardSetId"] + ' ' + item["Title"] )
       return (
-        <Link href={`/(modals)/set/${item["FlashcardSetId"]}`} asChild>
+        <Link href={`/(modals)/set/${item["id"]}`} asChild>
           <TouchableOpacity style={styles.setRow}>
             <View style={{ flexDirection: 'row', gap: 10 }}>
               <View style={{ flex: 1 }}>
-                <Text style={styles.rowTitle}>{item["Title"]}</Text>
-                <Text>{item["Description"]}</Text>
+                <Text style={styles.rowTitle}>{item["title"]}</Text>
+                <Text>{item["description"]}</Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -49,7 +51,7 @@ const Page = () => {
             <Text className="font-extrabold text-5xl">Flashcards</Text>
           </View>
             <FlatList 
-                data={sets}
+                data={decks}
                 renderItem={renderSetRow}
             />
         </SafeAreaView>

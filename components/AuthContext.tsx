@@ -63,6 +63,7 @@ export const AuthProvider = ({children}: any) => {
 
         // Set the token in the axios headers
         api.defaults.headers.common['Authorization'] = `Bearer ${user.accessToken}`;
+        console.log(api.defaults.headers.common['Authorization'])
 
         await setItem(SESSION_KEY, JSON.stringify(user));
 

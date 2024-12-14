@@ -58,12 +58,12 @@ const Home = () => {
     const renderSetRow: ListRenderItem<Set> = ({item}) => {
         //console.log(item["FlashcardSetId"] + ' ' + item["Title"] )
         return (
-            <Link href={`/(modals)/set/edit/${item["FlashcardSetId"]}`} asChild>
+            <Link href={`/(modals)/set/edit/${item["id"]}`} asChild>
                 <TouchableOpacity style={styles.setRow}>
                     <View style={{flexDirection: 'row', gap: 10}}>
                         <View style={{flex: 1}}>
-                            <Text style={styles.rowTitle}>{item["Title"]}</Text>
-                            <Text>{item["Description"]}</Text>
+                            <Text style={styles.rowTitle}>{item["title"]}</Text>
+                            <Text>{item["description"]}</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
