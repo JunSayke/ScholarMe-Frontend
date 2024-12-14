@@ -2,14 +2,16 @@ import axios, {AxiosError, AxiosRequestConfig} from 'axios';
 import {ErrorResponse, UserSession} from '@/data/api';
 import {getItem, setItem, removeItem} from '@/lib/storage/storage';
 import {refreshToken as refreshTokenApi} from '@/data/api-routes';
+import { Platform } from 'react-native';
+
+const baseURL = Platform.OS === 'web' ? 'http://localhost:5000/api' : 'http://10.0.2.2:5000/api';
 
 const api = axios.create({
-    baseURL: 'https://localhost:7011/api',
+    baseURL,
     headers: {
         'Content-Type': 'application/json',
     },
 });
-
 export default api;
 
 let isRefreshing = false;
