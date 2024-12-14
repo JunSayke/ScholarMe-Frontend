@@ -5,6 +5,10 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {useAuth} from "@/components/AuthContext";
 import {UserAccountSignUpDto} from "@/data/api";
+import { AxiosError } from "axios";
+import {handleAxiosError} from "@/data/api-service";
+import {Text} from "@/components/ui/text";
+import {Link} from "expo-router";
 
 const Signup = () => {
     const {onRegister} = useAuth();
@@ -18,14 +22,23 @@ const Signup = () => {
     const handleSignUp = async () => {
         if (password != password2) {
             // TODO: Incorrect password
+            console.log("Password does not match.")
+            return;
         }
 
+        // TODO: Handle phone number input
         const userSignUpDto: UserAccountSignUpDto = {username, email, password, firstName, lastName}
         try {
             const response = await onRegister!(userSignUpDto);
-            console.log("Signed up successfully", response);
+            console.log("Sign up successfully: ", response.data);
         } catch (error) {
-            console.error("Error signing in:", error)
+            const axiosError = error as AxiosError;
+            const errorResponse = handleAxiosError(axiosError)
+            if (errorResponse) {
+                console.error("Error signing up:", errorResponse);
+            } else {
+                console.error("Unexpected error:", error);
+            }
         }
     }
 
@@ -36,14 +49,20 @@ const Signup = () => {
             <Label>Email</Label>
             <Input value={email} onChangeText={setEmail}/>
             <Label>Password</Label>
-            <Input value={password} onChangeText={setPassword}/>
+            <Input value={password} onChangeText={setPassword} secureTextEntry/>
             <Label>Confirm Password</Label>
-            <Input value={password2} onChangeText={setPassword2}/>
+            <Input value={password2} onChangeText={setPassword2} secureTextEntry/>
             <Label>First Name</Label>
             <Input value={firstName} onChangeText={setFirstName}/>
             <Label>Last Name</Label>
             <Input value={lastName} onChangeText={setLastName}/>
-            <Button onPress={handleSignUp}>Register</Button>
+            <Button onPress={handleSignUp}>
+                <Text>Register</Text>
+            </Button>
+            <View>
+                <Text className="text-center">Already have an account? <Link href={"/(auth)/signin"}>Sign
+                    In</Link></Text>
+            </View>
         </View>
     );
 };

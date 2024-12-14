@@ -1,8 +1,8 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import {signIn, signUp} from '@/data/api-routes';
-import axios from 'axios';
-import {setItem, getItem, removeItem} from '@/lib/storage/storage';
-import {UserAccountSignInDto, UserAccountSignUpDto} from '@/data/api';
+import api from '@/data/api-service';
+import {getItem, removeItem, setItem} from '@/lib/storage/storage';
+import {UserAccountSignInDto, UserAccountSignUpDto, UserSession} from '@/data/api';
 
 interface AuthProps {
     authState?: { token: string | null; authenticated: boolean | null };
@@ -11,7 +11,7 @@ interface AuthProps {
     onLogout?: () => Promise<any>;
 }
 
-const SESSION_KEY = 'user_session';
+export const SESSION_KEY = 'user_session';
 const AuthContext = createContext<AuthProps>({});
 
 export const useAuth = () => {
@@ -29,12 +29,12 @@ export const AuthProvider = ({children}: any) => {
 
     useEffect(() => {
         const loadToken = async () => {
-            const userSession = await getItem(SESSION_KEY);
-            const token = userSession ? JSON.parse(userSession).token : null;
-            console.log('Stored:', token);
+            const user = await getItem(SESSION_KEY);
+            const token = user ? JSON.parse(user).accessToken : null;
+            console.log('Stored JWT:', token);
 
             if (token) {
-                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
                 setAuthState({
                     token: token,
@@ -46,33 +46,27 @@ export const AuthProvider = ({children}: any) => {
     }, []);
 
     const register = async (userSignUpDto: UserAccountSignUpDto) => {
-        try {
-            return await signUp(userSignUpDto);
-        } catch (e) {
-            return {error: true, msg: (e as any).response.data.msg};
-        }
+        return await signUp(userSignUpDto);
     };
 
     const login = async (userSignInDto: UserAccountSignInDto) => {
-        try {
-            const result = await signIn(userSignInDto);
+        const result = await signIn(userSignInDto);
 
-            console.log('Authenticated:', result);
+        console.log('Authenticated:', result);
 
-            setAuthState({
-                token: result.data.token,
-                authenticated: true,
-            });
+        const user = result.data;
 
-            // Set the token in the axios headers
-            axios.defaults.headers.common['Authorization'] = `Bearer ${result.data.token}`;
+        setAuthState({
+            token: user.accessToken,
+            authenticated: true,
+        });
 
-            await setItem(SESSION_KEY, JSON.stringify(result.data));
+        // Set the token in the axios headers
+        api.defaults.headers.common['Authorization'] = `Bearer ${user.accessToken}`;
 
-            return result;
-        } catch (e) {
-            return {error: true, msg: (e as any).response.data.msg};
-        }
+        await setItem(SESSION_KEY, JSON.stringify(user));
+
+        return result;
     };
 
     const logout = async () => {
@@ -80,7 +74,7 @@ export const AuthProvider = ({children}: any) => {
         await removeItem(SESSION_KEY);
 
         // Update HTTP Headers
-        axios.defaults.headers.common['Authorization'] = '';
+        api.defaults.headers.common['Authorization'] = '';
 
         // Reset auth state
         setAuthState({

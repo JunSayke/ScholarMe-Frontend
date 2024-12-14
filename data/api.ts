@@ -1,5 +1,3 @@
-
-
 //
 // INTERFACES
 //
@@ -14,7 +12,6 @@
 // export interface Choice {
 //
 // }
-
 
 
 // Flashcard DTOs
@@ -116,17 +113,18 @@ export interface UserAccountUpdateDto {
 }
 
 export interface UserSession {
-    token: string;
+    accessToken: string;
+    refreshToken: string;
     user: UserAccountReadOnlyDto;
 }
 
 export interface ErrorResponse {
-  title: string;
-  status: number;
-  detail: string;
-  instance: string;
-  // errors are populated when the server returns model validation errors
-  errors?: {
-    [key: string]: string[];
-  };
+    title: string;
+    status: number;
+    detail: string;
+    instance: string;
+    // errors are populated when the server returns model validation errors
+    errors?: {
+        [key: string]: string[];
+    };
 }

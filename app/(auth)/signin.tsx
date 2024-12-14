@@ -7,6 +7,9 @@ import {UserAccountSignInDto} from "@/data/api";
 import {useAuth} from "@/components/AuthContext";
 import {Link} from "expo-router";
 import {Text} from "~/components/ui/text"
+import {getDecks} from "@/data/api-routes";
+import {AxiosError} from "axios";
+import {handleAxiosError} from "@/data/api-service";
 
 const Signin = () => {
     const {onLogin} = useAuth();
@@ -17,11 +20,17 @@ const Signin = () => {
         const userSignInDto: UserAccountSignInDto = {username, password};
         try {
             const response = await onLogin!(userSignInDto);
-            console.log("Signed in successfully:", response);
+            console.log("Sign in successfully: ", response.response?.data);
         } catch (error) {
-            console.error("Error signing in:", error);
+            const axiosError = error as AxiosError;
+            const errorResponse = handleAxiosError(axiosError)
+            if (errorResponse) {
+                console.error("Error signing in:", errorResponse);
+            } else {
+                console.error("Unexpected error:", error);
+            }
         }
-    };
+    }
 
     return (
         <View className="flex-1 p-10 items-center justify-center gap-4">
@@ -35,7 +44,8 @@ const Signin = () => {
             </View>
             <Button onPress={handleSignIn} className="w-full">Login</Button>
             <View>
-                <Text className="text-center">Don't have an account? <Link href={"/(auth)/signup"}>Sign Up</Link></Text>
+                <Text className="text-center">Don't have an account? <Link href={"/(auth)/signup"}>Sign
+                    Up</Link></Text>
             </View>
         </View>
     );
