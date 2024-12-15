@@ -10,6 +10,8 @@ const layout = () => {
         return <Redirect href="/(auth)/signin"/>
     }
 
+    console.log("TESTING")
+
     return (
         <Stack>
             <Stack.Screen name="(tabs)" options={{headerShown: false}}/>

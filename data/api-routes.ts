@@ -9,9 +9,15 @@ import {
     FlashcardDeckReadOnlyDto,
     FlashcardDeckUpdateDto,
     FlashcardReadOnlyDto,
-    FlashcardUpdateDto, RefreshTokenRequestDto,
+    FlashcardUpdateDto,
+    ProfileAvatarDto,
+    ProfileAvatarReadOnlyDto,
+    RefreshTokenRequestDto,
+    UserAccountChangePasswordDto,
+    UserAccountReadOnlyDto,
     UserAccountSignInDto,
     UserAccountSignUpDto,
+    UserAccountUpdateDto,
     UserSession
 } from './api';
 import axios, {AxiosError} from "axios";
@@ -20,6 +26,15 @@ import {endSession, getUser, startSession} from "@/components/AuthContext";
 // User Accounts
 export const signIn = (userSignInDto: UserAccountSignInDto) => api.post<UserSession>('/useraccounts/signin', userSignInDto);
 export const signUp = (userSignUpDto: UserAccountSignUpDto) => api.post<UserSession>('/useraccounts/signup', userSignUpDto);
+
+// Update Avatar
+export const updateAvatar = (profileAvatarDto: ProfileAvatarDto) => api.post<ProfileAvatarReadOnlyDto>('/useraccounts/update-avatar', profileAvatarDto);
+
+// Edit Profile
+export const updateUserAccount = (userAccountDto: UserAccountUpdateDto) => api.put<UserAccountReadOnlyDto>('/useraccounts/edit-profile', userAccountDto);
+
+// Change Password
+export const updateUserPassword = (userAccountDto: UserAccountChangePasswordDto) => api.put<void>('/useraccounts/change-password', userAccountDto);
 
 // Decks
 export const createDeck = (deckCreateDto: FlashcardDeckCreateDto) => api.post<FlashcardDeckReadOnlyDto>('/flashcards/decks', deckCreateDto);

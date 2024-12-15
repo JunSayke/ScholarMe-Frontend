@@ -87,6 +87,7 @@ export interface UserAccountReadOnlyDto {
     firstName: string;
     lastName: string;
     phoneNumber?: string;
+    avatarPath?: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -110,6 +111,22 @@ export interface UserAccountUpdateDto {
     firstName?: string;
     lastName?: string;
     phoneNumber?: string;
+}
+
+// ProfileAvatarDto
+export interface ProfileAvatarDto {
+    avatar: File;
+}
+
+// UserAccountChangePasswordDto
+export interface UserAccountChangePasswordDto {
+    oldPassword: string;
+    newPassword: string;
+}
+
+// ProfileAvatarReadOnlyDto
+export interface ProfileAvatarReadOnlyDto {
+    filePath: string;
 }
 
 export interface UserSession {

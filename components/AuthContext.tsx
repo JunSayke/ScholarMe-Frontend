@@ -33,6 +33,21 @@ export const useAuth = () => {
     return useContext(AuthContext);
 };
 
+export const useUser = (): UserSession | null => {
+    const [userSession, setUserSession] = useState<UserSession | null>(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const user = await getUser();
+            setUserSession(user);
+        };
+
+        fetchUser();
+    }, []);
+
+    return userSession;
+};
+
 export const AuthProvider = ({children}: any) => {
     const [authState, setAuthState] = useState<{
         token: string | null;

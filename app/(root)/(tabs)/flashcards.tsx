@@ -1,17 +1,9 @@
-import { 
-  View, 
-  StyleSheet, 
-  ListRenderItem, 
-  FlatList, 
-  SafeAreaView, 
-  TouchableOpacity,
-  Image
-} from 'react-native';
-import { Text } from "~/components/ui/text";
-import React, { useState, useEffect } from 'react';
-import { Link } from 'expo-router';
-import { getAllDecks, getDecks } from '@/data/api-routes';
-import { FlashcardDeckReadOnlyDto } from '@/data/api';
+import {FlatList, ListRenderItem, SafeAreaView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Text} from "~/components/ui/text";
+import React, {useEffect, useState} from 'react';
+import {Link} from 'expo-router';
+import {getAllDecks} from '@/data/api-routes';
+import {FlashcardDeckReadOnlyDto} from '@/data/api';
 
 const Page = () => {
   const [decks, setDecks] = useState<FlashcardDeckReadOnlyDto[]>([]);
@@ -48,7 +40,7 @@ const Page = () => {
           <View className="w-full h-1/6 bg-[#3D5CFF] flex items-center justify-center">
             <Text className="font-extrabold text-5xl text-white">Flashcards</Text>
           </View>
-            <FlatList 
+            <FlatList
                 data={decks}
                 renderItem={renderSetRow}
             />
