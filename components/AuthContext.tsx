@@ -46,8 +46,7 @@ export const AuthProvider = ({children}: any) => {
         const loadToken = async () => {
             const user = await getUser();
             const token = user ? user.accessToken : null;
-            console.log('Stored JWT:', token);
-            console.log('Authenticated:', authState.authenticated);
+            console.log('Authenticated:', user);
 
             if (token) {
                 api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -68,9 +67,9 @@ export const AuthProvider = ({children}: any) => {
     const login = async (userSignInDto: UserAccountSignInDto) => {
         const result = await signIn(userSignInDto);
 
-        console.log('Authenticated:', result);
-
         const user = result.data;
+
+        console.log('Authenticated:', user);
 
         setAuthState({
             token: user.accessToken,
