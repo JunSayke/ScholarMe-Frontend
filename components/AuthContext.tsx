@@ -11,8 +11,23 @@ interface AuthProps {
     onLogout?: () => Promise<any>;
 }
 
-export const SESSION_KEY = 'user_session';
+const SESSION_KEY = 'user_session';
 const AuthContext = createContext<AuthProps>({});
+
+// Function to get the user session from storage
+export const getUser = async (): Promise<UserSession | null> => {
+    const user = await getItem(SESSION_KEY);
+    return user ? JSON.parse(user) : null;
+};
+
+export const startSession = async (user: UserSession): Promise<void> => {
+    await setItem(SESSION_KEY, JSON.stringify(user));
+}
+
+// Function to remove the user session from storage
+export const endSession = async (): Promise<void> => {
+    await removeItem(SESSION_KEY);
+};
 
 export const useAuth = () => {
     return useContext(AuthContext);
@@ -29,9 +44,10 @@ export const AuthProvider = ({children}: any) => {
 
     useEffect(() => {
         const loadToken = async () => {
-            const user = await getItem(SESSION_KEY);
-            const token = user ? JSON.parse(user).accessToken : null;
+            const user = await getUser();
+            const token = user ? user.accessToken : null;
             console.log('Stored JWT:', token);
+            console.log('Authenticated:', authState.authenticated);
 
             if (token) {
                 api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -64,14 +80,14 @@ export const AuthProvider = ({children}: any) => {
         // Set the token in the axios headers
         api.defaults.headers.common['Authorization'] = `Bearer ${user.accessToken}`;
 
-        await setItem(SESSION_KEY, JSON.stringify(user));
+        await startSession(user)
 
         return result;
     };
 
     const logout = async () => {
         // Delete token from storage
-        await removeItem(SESSION_KEY);
+        await endSession();
 
         // Update HTTP Headers
         api.defaults.headers.common['Authorization'] = '';
@@ -88,6 +104,7 @@ export const AuthProvider = ({children}: any) => {
         onLogin: login,
         onLogout: logout,
         authState,
+
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

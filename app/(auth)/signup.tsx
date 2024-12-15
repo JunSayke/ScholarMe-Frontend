@@ -6,7 +6,7 @@ import {Button} from "@/components/ui/button";
 import {useAuth} from "@/components/AuthContext";
 import {UserAccountSignUpDto} from "@/data/api";
 import { AxiosError } from "axios";
-import {handleAxiosError} from "@/data/api-service";
+import {handleAxiosError} from "@/data/api-routes";
 import {Text} from "@/components/ui/text";
 import {Link} from "expo-router";
 

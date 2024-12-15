@@ -118,6 +118,10 @@ export interface UserSession {
     user: UserAccountReadOnlyDto;
 }
 
+export interface RefreshTokenRequestDto {
+    refreshToken: string;
+}
+
 export interface ErrorResponse {
     title: string;
     status: number;
