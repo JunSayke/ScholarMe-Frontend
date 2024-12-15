@@ -24,20 +24,31 @@ export const signUp = (userSignUpDto: UserAccountSignUpDto) => api.post<UserSess
 // Decks
 export const createDeck = (deckCreateDto: FlashcardDeckCreateDto) => api.post<FlashcardDeckReadOnlyDto>('/flashcards/decks', deckCreateDto);
 export const getDecks = () => api.get<FlashcardDeckReadOnlyDto[]>('/flashcards/decks');
-export const getDeckById = (deckId: number) => api.get<FlashcardDeckReadOnlyDto>(`/flashcards/decks/${deckId}`);
+export const getDeckById = (deckId: string, options?: { includeFlashcards?: boolean }) => {
+    const params = new URLSearchParams();
+    if (options?.includeFlashcards) {
+        params.append('includeFlashcards', 'false');
+    }
+    return api.get<FlashcardDeckReadOnlyDto>(`/flashcards/decks/${deckId}?${params.toString()}`);
+};
+
 export const updateDeck = (deckId: number, deckUpdateDto: FlashcardDeckUpdateDto) => api.put<FlashcardDeckReadOnlyDto>(`/flashcards/decks/${deckId}`, deckUpdateDto);
 export const deleteDeck = (deckId: number) => api.delete<void>(`/flashcards/decks/${deckId}`);
 
 // Cards
 export const createCard = (deckId: number, cardCreateDto: FlashcardCreateDto) => api.post<FlashcardReadOnlyDto>(`/flashcards/decks/${deckId}/cards`, cardCreateDto);
-export const getCards = (deckId: number, options?: { choices?: boolean }) => {
+export const getCards = (deckId: number, options?: { includeChoices?: boolean }) => {
     const params = new URLSearchParams();
-    if (options?.choices) {
-        params.append('choices', 'true');
+    if (options?.includeChoices) {
+        params.append('includeChoices', 'false');
     }
     return api.get<FlashcardReadOnlyDto[]>(`/flashcards/decks/${deckId}/cards?${params.toString()}`);
 };
-export const getCardById = (cardId: number) => api.get<FlashcardReadOnlyDto>(`/flashcards/cards/${cardId}`);
+export const getCardById = (cardId: number, options?: { flashcards?: boolean }) => {
+    const params = new URLSearchParams();
+}
+
+
 export const updateCard = (cardId: number, cardUpdateDto: FlashcardUpdateDto) => api.put<FlashcardReadOnlyDto>(`/flashcards/cards/${cardId}`, cardUpdateDto);
 export const deleteCard = (cardId: number) => api.delete<void>(`/cards/${cardId}`);
 
