@@ -23,6 +23,7 @@ export interface FlashcardReadOnlyDto {
     id: string;
     flashcardSetId: string;
     question: string;
+    choices: FlashcardChoiceReadOnlyDto;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -40,7 +41,7 @@ export interface FlashcardChoiceCreateDto {
 
 export interface FlashcardChoiceReadOnlyDto {
     id: string;
-    flashcardId: string;
+    flashcardId?: string;
     choice: string;
     isAnswer: boolean;
     createdAt: Date;

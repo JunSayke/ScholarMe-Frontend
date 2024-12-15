@@ -44,10 +44,13 @@ export const getCards = (deckId: number, options?: { includeChoices?: boolean })
     }
     return api.get<FlashcardReadOnlyDto[]>(`/flashcards/decks/${deckId}/cards?${params.toString()}`);
 };
-export const getCardById = (cardId: number, options?: { flashcards?: boolean }) => {
+export const getCardById = (cardId: number, options?: { includeChoices?: boolean }) => {
     const params = new URLSearchParams();
+    if (options?.includeChoices) {
+        params.append('includeChoices', 'false');
+    }
+    return api.get<FlashcardReadOnlyDto>(`flashcards/cards/${cardId}?${params.toString()}`);
 }
-
 
 export const updateCard = (cardId: number, cardUpdateDto: FlashcardUpdateDto) => api.put<FlashcardReadOnlyDto>(`/flashcards/cards/${cardId}`, cardUpdateDto);
 export const deleteCard = (cardId: number) => api.delete<void>(`/cards/${cardId}`);
