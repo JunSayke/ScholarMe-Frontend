@@ -31,8 +31,20 @@ export const signUp = (userSignUpDto: UserAccountSignUpDto) => api.post<UserSess
 export const updateAvatar = (profileAvatarDto: ProfileAvatarDto) => api.post<ProfileAvatarReadOnlyDto>('/useraccounts/update-avatar', profileAvatarDto);
 
 // Edit Profile
-export const updateUserAccount = (userAccountDto: UserAccountUpdateDto) => api.put<UserAccountReadOnlyDto>('/useraccounts/edit-profile', userAccountDto);
+export const updateUserAccount = (userAccountDto: UserAccountUpdateDto, avatar?: File) => {
+    console.log(avatar);
+    const formData = new FormData();
+    formData.append('userAccountDto', JSON.stringify(userAccountDto));
+    if (avatar) {
+        formData.append('avatar', avatar);
+    }
 
+    return api.put<UserAccountReadOnlyDto>('/useraccounts/edit-profile', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+};
 // Change Password
 export const updateUserPassword = (userAccountDto: UserAccountChangePasswordDto) => api.put<void>('/useraccounts/change-password', userAccountDto);
 

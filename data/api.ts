@@ -114,6 +114,7 @@ export interface UserAccountUpdateDto {
 }
 
 // ProfileAvatarDto
+// TODO: Fix
 export interface ProfileAvatarDto {
     avatar: File;
 }
