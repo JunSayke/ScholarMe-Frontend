@@ -16,33 +16,33 @@
 
 // Flashcard DTOs
 export interface FlashcardCreateDto {
-    flashcardSetId: number;
+    flashcardSetId: string;
     question: string;
 }
 
 export interface FlashcardReadOnlyDto {
-    id: number;
-    flashcardSetId: number;
+    id: string;
+    flashcardSetId: string;
     question: string;
     createdAt: Date;
     updatedAt: Date;
 }
 
 export interface FlashcardUpdateDto {
-    flashcardSetId?: number;
+    flashcardSetId?: string;
     question?: string;
 }
 
 // FlashcardChoice DTOs
 export interface FlashcardChoiceCreateDto {
-    flashcardId: number;
+    flashcardId: string;
     choice: string;
     isAnswer: boolean;
 }
 
 export interface FlashcardChoiceReadOnlyDto {
-    id: number;
-    flashcardId: number;
+    id: string;
+    flashcardId: string;
     choice: string;
     isAnswer: boolean;
     createdAt: Date;
@@ -61,8 +61,8 @@ export interface FlashcardDeckCreateDto {
 }
 
 export interface FlashcardDeckReadOnlyDto {
-    id: number;
-    userAccountId: number;
+    id: string;
+    userAccountId: string;
     title: string;
     description: string;
     createdAt: Date;
@@ -81,7 +81,7 @@ export interface UserAccountChangePasswordDto {
 }
 
 export interface UserAccountReadOnlyDto {
-    id: number;
+    id: string;
     username: string;
     email: string;
     firstName: string;
@@ -116,6 +116,10 @@ export interface UserSession {
     accessToken: string;
     refreshToken: string;
     user: UserAccountReadOnlyDto;
+}
+
+export interface RefreshTokenRequestDto {
+    refreshToken: string;
 }
 
 export interface ErrorResponse {
