@@ -9,6 +9,8 @@ import navprofile from "@/assets/images/nav-profile.png";
 import icondefault from "@/assets/images/default-user-icon.png"
 
 import cardplus from "@/assets/images/cardplus.png"
+import edit from "@/assets/images/editicon.png"
+import trash from "@/assets/images/trashicon.png"
 
 import { router } from "expo-router";
 import React from "react";
@@ -21,6 +23,8 @@ export const icons = {
   navprofile,
   cardplus,
   icondefault,
+  edit,
+  trash,
 };
 
 const onboarding = [
