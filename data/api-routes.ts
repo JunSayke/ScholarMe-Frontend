@@ -23,6 +23,7 @@ export const signUp = (userSignUpDto: UserAccountSignUpDto) => api.post<UserSess
 
 // Decks
 export const createDeck = (deckCreateDto: FlashcardDeckCreateDto) => api.post<FlashcardDeckReadOnlyDto>('/flashcards/decks', deckCreateDto);
+export const getAllDecks = () => api.get<FlashcardDeckReadOnlyDto[]>('/flashcards/decks/all')
 export const getDecks = () => api.get<FlashcardDeckReadOnlyDto[]>('/flashcards/decks');
 export const getDeckById = (deckId: string, options?: { includeFlashcards?: boolean }) => {
     const params = new URLSearchParams();
@@ -53,14 +54,14 @@ export const getCardById = (cardId: number, options?: { includeChoices?: boolean
 }
 
 export const updateCard = (cardId: number, cardUpdateDto: FlashcardUpdateDto) => api.put<FlashcardReadOnlyDto>(`/flashcards/cards/${cardId}`, cardUpdateDto);
-export const deleteCard = (cardId: number) => api.delete<void>(`/cards/${cardId}`);
+export const deleteCard = (cardId: number) => api.delete<void>(`/flashcards/cards/${cardId}`);
 
 // Choices
 export const createChoice = (cardId: number, choiceCreateDto: FlashcardChoiceCreateDto) => api.post<FlashcardChoiceReadOnlyDto>(`/flashcards/cards/${cardId}/choices`, choiceCreateDto);
 export const getChoices = (cardId: number) => api.get<FlashcardChoiceReadOnlyDto[]>(`/flashcards/cards/${cardId}/choices`);
 export const getChoiceById = (choiceId: number) => api.get<FlashcardChoiceReadOnlyDto>(`/flashcards/choices/${choiceId}`);
 export const updateChoice = (choiceId: number, choiceUpdateDto: FlashcardChoiceUpdateDto) => api.put<FlashcardChoiceReadOnlyDto>(`/flashcards/choices/${choiceId}`, choiceUpdateDto);
-export const deleteChoice = (choiceId: number) => api.delete<void>(`/choices/${choiceId}`);
+export const deleteChoice = (choiceId: number) => api.delete<void>(`/flashcards/choices/${choiceId}`);
 
 const refreshToken = (refreshToken: RefreshTokenRequestDto) => api.post<UserSession>('/useraccounts/refresh-token', refreshToken);
 
