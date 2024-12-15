@@ -55,6 +55,7 @@ export interface FlashcardChoiceUpdateDto {
 
 // FlashcardDeck DTOs
 export interface FlashcardDeckCreateDto {
+    id: string;
     title: string;
     description: string;
 }

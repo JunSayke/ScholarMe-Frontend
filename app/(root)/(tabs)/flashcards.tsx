@@ -34,8 +34,8 @@ const Page = () => {
           <TouchableOpacity style={styles.setRow}>
             <View style={{ flexDirection: 'row', gap: 10 }}>
               <View style={{ flex: 1 }}>
-                <Text style={styles.rowTitle}>{item["title"]}</Text>
-                <Text>{item["description"]}</Text>
+                <Text className='text-white' style={styles.rowTitle}>{item["title"]}</Text>
+                <Text className='text-white' >{item["description"]}</Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -44,9 +44,9 @@ const Page = () => {
     }
 
     return (
-        <SafeAreaView className="h-full w-full">
+        <SafeAreaView className="h-full w-full bg-[#1F1F39]">
           <View className="w-full h-1/6 bg-[#3D5CFF] flex items-center justify-center">
-            <Text className="font-extrabold text-5xl">Flashcards</Text>
+            <Text className="font-extrabold text-5xl text-white">Flashcards</Text>
           </View>
             <FlatList 
                 data={decks}

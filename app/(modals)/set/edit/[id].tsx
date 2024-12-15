@@ -109,18 +109,18 @@ const Page = () => {
       };
     
       return (
-        <View style={styles.container}>
+        <View style={styles.container} className='bg-[#1F1F39]'>
           {set && (
             <View className="h-full">
-              <View className="w-full p-5 bg-[#3D5CFF] flex items-center justify-center">
+              <View className="w-full p-1 bg-[#3D5CFF] flex items-center justify-center">
                 <View className='w-full p-5 flex items-start'>
-                  <Text>Edit Deck</Text>
+                  <Text className='text-white'>Edit Deck</Text>
                   <Switch 
                     onValueChange={() => setEditDeck(!editDeck)}
                     value={editDeck}
                   />
                 </View>
-                <Text className="text-5xl">{set["title"]}</Text>
+                <Text className="text-5xl text-white">{set["title"]}</Text>
                 {editDeck ? (
                   <View className='w-full flex items-center'>
                     <TextInput 
@@ -138,14 +138,14 @@ const Page = () => {
                       onChangeText={(text) => setEditInformation({ ...card, description: text })}
                     />
                     <View className="flex flex-row pb-10">
-                      <CustomButton title='Edit Deck' className='h-10 w-40' onPress={() => onEditDeck()}/>
-                      <CustomButton title='X' className='h-10 w-10 bg-[#FF0000]' onPress={() => onDeleteDeck(id)}/>
+                      <CustomButton title='Edit Deck' className='h-12 w-40' onPress={() => onEditDeck()}/>
+                      <CustomButton title='X' className='h-12 w-10 bg-[#FF0000]' onPress={() => onDeleteDeck(id)}/>
                     </View>
                   </View>
                 ):(
                   <View className='w-full flex items-center'>
-                    <Text className="text-2xl">{set["description"]}</Text>
-                    <Text className="text-xl pt-5">Create question:</Text>
+                    <Text className="text-2xl text-white">{set["description"]}</Text>
+                    <Text className="text-xl pt-5 text-white">Create question:</Text>
                     <TextInput 
                       className="mt-1 w-11/12 p-1 rounded-3xl bg-[#FFF]"
                       placeholder="Question"
@@ -153,7 +153,7 @@ const Page = () => {
                       onChangeText={(text) => setInformation({ ...information, question: text })}
                     />
                     <CustomButton
-                        className="h-10 px-20 my-1"
+                        className="h-12 px-20 my-1"
                         title="Add Card"
                         onPress={onCreateCard}
                     />

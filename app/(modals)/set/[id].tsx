@@ -7,23 +7,20 @@ import { createCard, getCards, getChoices, getDeckById } from '@/data/api-routes
 
 const Page = () => {
     const { id } = useLocalSearchParams<{ id: string }>();
-    const [set, setSet] = useState<Set>();
-    const [card, setCard] = useState<Set>();
-    const [choice, setChoice] = useState<Set>();
-    const router = useRouter();
+    const [deck, setDeck] = useState<Set>();
+    const [cards, setCards] = useState<Set>();
     const [flipStates, setFlipStates] = useState<{ [key: string]: boolean }>({}); // To track flip state for each card
 
-    //REWORK EVERYTHING ONCE CODE IS RELEASED
     useEffect(() => {
         if (!id) return;
     
         const loadData = async () => {
           try {
-              const fetchedSet = await getDeckById(id);
-              setSet(fetchedSet.data);
+              const fetchedDeck = await getDeckById(id);
+              setDeck(fetchedDeck.data);
   
-              const fetchedCards = await getCards(fetchedSet.data["id"], {"includeChoices" : true});
-              setCard(fetchedCards.data);
+              const fetchedCards = await getCards(fetchedDeck.data["id"], {"includeChoices" : true});
+              setCards(fetchedCards.data);
           } catch (error) {
               console.error("Error loading data:", error);
           }
@@ -36,7 +33,7 @@ const Page = () => {
     const renderChoiceRow: ListRenderItem<Set> = ({ item }) => {
         return (
             <View style={{ flexDirection: 'row', gap: 10 }}>
-                <Text className='text-2xl text-black'>{item["Choice"]}</Text>
+                <Text className='text-2xl text-black'>{item["choice"]}</Text>
             </View>
         );
       }
@@ -75,13 +72,13 @@ const Page = () => {
     
       return (
         <View style={styles.container}>
-          {set && (
+          {deck && (
             <View className="h-full">
               <View className="w-full h-1/6 bg-[#3D5CFF] flex items-center justify-center">
-                <Text className="text-5xl">{set["title"]}</Text>
+                <Text className="text-5xl">{deck["title"]}</Text>
                 {/* <Text className="text-2xl">Created by: {set["userAccount"]["username"]}</Text> */}
               </View>
-              <FlatList data={card} renderItem={renderCardRow} />
+              <FlatList data={cards} renderItem={renderCardRow} />
             </View>
           )}
         </View>

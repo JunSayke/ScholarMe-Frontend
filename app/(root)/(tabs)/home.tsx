@@ -7,14 +7,13 @@ import {
     ListRenderItem,
     StyleSheet,
     FlatList,
-    TextInput
+    TextInput,
+    ScrollView
 }
     from "react-native";
 import {Text} from "~/components/ui/text";
 import {icons} from "@/constants";
 import {Redirect, router, Link} from "expo-router";
-
-import {FlashcardDeck} from '@/data/temporary';
 import CustomButton from "@/components/CustomButton";
 import {createDeck, getDeckById, getDecks} from "@/data/api-routes";
 import {AxiosError} from "axios";
@@ -28,7 +27,12 @@ const Home = () => {
         description: '',
     });
 
-    // IMPLEMENT WHEN API IS ADDED
+    const [newInformation, setNewInformation] = useState({
+        id: '',
+        title: '',
+        description: '',
+    });
+
     useEffect(() => {
         loadSets();
     }, []);
@@ -52,20 +56,21 @@ const Home = () => {
     }
 
     const onCreateDeck = async () => {
-        console.log(information)
-        await createDeck(information)
-        router.replace(`/(root)/(tabs)/home`);
+        console.log(information);
+        const createdDeck = await createDeck(information);
+        console.log(createdDeck.data);
+        router.replace(`/(modals)/set/edit/${createdDeck.data["id"]}`);
     };
 
     const renderSetRow: ListRenderItem<Set> = ({item}) => {
         //console.log(item["FlashcardSetId"] + ' ' + item["Title"] )
         return (
-            <Link href={`/(modals)/set/edit/${item["id"]}`} asChild>
+            <Link href={`/(modals)/set/edit/${item["id"]}` } asChild>
                 <TouchableOpacity style={styles.setRow}>
                     <View style={{flexDirection: 'row', gap: 10}}>
                         <View style={{flex: 1}}>
-                            <Text style={styles.rowTitle}>{item["title"]}</Text>
-                            <Text>{item["description"]}</Text>
+                            <Text className='text-white' style={styles.rowTitle}>{item["title"]}</Text>
+                            <Text className='text-white'>{item["description"]}</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -75,11 +80,12 @@ const Home = () => {
 
     return (
         <>
-            <SafeAreaView className="h-full w-full">
+            <SafeAreaView className="h-full w-full bg-[#1F1F39]">
+                <ScrollView style={{flex: 1}}>
                 <View className="w-full h-1/4 bg-[#3D5CFF] flex flex-row items-center justify-between">
                     <View className="pl-16">
-                        <Text className="font-extrabold text-7xl">Hi!</Text>
-                        <Text className="font-extrabold">Let's start learning</Text>
+                        <Text className="font-extrabold text-7xl text-white">Hi!</Text>
+                        <Text className="font-extrabold text-white">Let's start learning</Text>
                     </View>
                     <View className="pr-10">
                         <TouchableOpacity onPress={() =>
@@ -93,7 +99,7 @@ const Home = () => {
                 <SafeAreaView className=" pt-5 flex items-center">
                     <View
                         className="w-11/12 h-24 bg-[#2F2F42] rounded-3xl shadow-lg elevation-5 flex flex-row items-center justify-between ">
-                        <Text className="pl-5 text-3xl">Your Flashcards</Text>
+                        <Text className="pl-5 text-3xl text-white">Your Flashcards</Text>
                         <TouchableOpacity onPress={() => setCreateDropdownState(!createDropdownState)}>
                             <Image source={icons.cardplus} tintColor={'white'} className="w-12 h-12 mr-5"/>
                         </TouchableOpacity>
@@ -127,14 +133,15 @@ const Home = () => {
 
                 </SafeAreaView>
 
-                <Text className="pl-5 pb-5 pt-10 text-3xl">Your Flashcards</Text>
+                <Text className="pl-5 pb-5 pt-10 text-3xl text-white">Your Flashcards</Text>
                 <SafeAreaView className="mx-10 rounded-3xl bg-[#2F2F42] flex items-center justify-center">
-                    <FlatList className="w-full p-5 rounded-3xl shadow-lg flex flex-row"
-                              data={sets}
-                              renderItem={renderSetRow}
+                    <FlatList className="w-full h-full p-5 rounded-3xl shadow-lg flex flex-row"
+                        data={sets}
+                        renderItem={renderSetRow}
+                            
                     />
                 </SafeAreaView>
-
+                </ScrollView>
             </SafeAreaView>
         </>
     );
