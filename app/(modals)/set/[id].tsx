@@ -19,23 +19,11 @@ const Page = () => {
     
         const loadData = async () => {
           try {
-              const numid: number = +id;
-              const fetchedSet = await getDeckById(numid);
+              const fetchedSet = await getDeckById(id);
               setSet(fetchedSet.data);
   
-              const fetchedCards = await getCards(fetchedSet.data["id"]);
+              const fetchedCards = await getCards(fetchedSet.data["id"], {"includeChoices" : true});
               setCard(fetchedCards.data);
-
-              var fetchedChoices = new Set;
-              for (var cards in fetchedCards.data){
-                console.log(cards[0])
-                fetchedChoices.add(await getChoices(cards["flashcardId"]));
-              }
-
-              // const fetchedChoices = await getChoices(1); //change this later
-
-              setChoice(fetchedChoices);
-  
           } catch (error) {
               console.error("Error loading data:", error);
           }
@@ -54,26 +42,29 @@ const Page = () => {
       }
 
       const renderCardRow: ListRenderItem<Set> = ({ item }) => {
-        const cardChoices = choice?.filter((choice) => choice["flashcardId"] === item["flashcardId"]);
-        const answer = cardChoices?.filter((x) => x["isAnswer"] === true);
+        const answers = item["choices"]?.filter((x) => x["isAnswer"] === true)
     
-        const isFlipped = flipStates[item["FlashcardId"]] || false; // Get flip state for this specific card
+        const isFlipped = flipStates[item["id"]] || false; // Get flip state for this specific card
     
         return (
-          <TouchableOpacity onPress={() => setFlipStates((prev) => ({ ...prev, [item["flashcardId"]]: !prev[item["FlashcardId"]] }))}>
-            {isFlipped && answer?.length > 0 ? (
+          <TouchableOpacity onPress={() => setFlipStates((prev) => ({ ...prev, [item["id"]]: !prev[item["id"]] }))}>
+            {isFlipped && answers?.length > 0 ? (
               <View className="w-full h-96 p-5 my-5 bg-[#FFF] rounded-3xl flex flex-column items-center justify-center gap-10">
-                <Text className="text-3xl text-black">{answer[0]["choice"]}</Text>
+                {answers.map((answer, index) => (
+                <Text key={index} className="text-3xl text-black">
+                  {answer["choice"]}
+                </Text>
+              ))}
               </View>
             ) : (
               <View className="w-full h-96 p-5 my-5 bg-[#FFF] rounded-3xl flex flex-column items-center justify-center gap-10">
                 <Text className="text-3xl text-black">{item["question"]}</Text>
     
-                {cardChoices && (
+                {item["choices"] && (
                   <FlatList
-                    data={cardChoices}
+                    data={item["choices"]}
                     renderItem={renderChoiceRow}
-                    keyExtractor={(choice) => choice["FlashcardChoiceId"].toString()}
+                    keyExtractor={(choice) => choice["id"].toString()}
                   />
                 )}
               </View>

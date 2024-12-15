@@ -8,7 +8,7 @@ import {UserAccountSignUpDto} from "@/data/api";
 import { AxiosError } from "axios";
 import {handleAxiosError} from "@/data/api-routes";
 import {Text} from "@/components/ui/text";
-import {Link, Redirect} from "expo-router";
+import {Link, useRouter} from "expo-router";
 
 const Signup = () => {
     const {onRegister} = useAuth();
@@ -18,6 +18,7 @@ const Signup = () => {
     const [password2, setPassword2] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
+    const router = useRouter();
 
     const handleSignUp = async () => {
         if (password != password2) {
@@ -31,7 +32,7 @@ const Signup = () => {
         try {
             const response = await onRegister!(userSignUpDto);
             console.log("Sign up successfully: ", response.data);
-            return <Redirect href="/(auth)/signin" />
+            router.replace("/(auth)/signin");
         } catch (error) {
             const axiosError = error as AxiosError;
             const errorResponse = handleAxiosError(axiosError)
