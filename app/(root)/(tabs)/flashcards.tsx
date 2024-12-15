@@ -10,8 +10,6 @@ import {
 import { Text } from "~/components/ui/text";
 import React, { useState, useEffect } from 'react';
 import { Link } from 'expo-router';
-
-import { FlashcardDeck } from '@/data/temporary';
 import { getDecks } from '@/data/api-routes';
 import { FlashcardDeckReadOnlyDto } from '@/data/api';
 

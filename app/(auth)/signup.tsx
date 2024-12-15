@@ -8,7 +8,7 @@ import {UserAccountSignUpDto} from "@/data/api";
 import { AxiosError } from "axios";
 import {handleAxiosError} from "@/data/api-routes";
 import {Text} from "@/components/ui/text";
-import {Link} from "expo-router";
+import {Link, Redirect} from "expo-router";
 
 const Signup = () => {
     const {onRegister} = useAuth();
@@ -31,6 +31,7 @@ const Signup = () => {
         try {
             const response = await onRegister!(userSignUpDto);
             console.log("Sign up successfully: ", response.data);
+            return <Redirect href="/(auth)/signin" />
         } catch (error) {
             const axiosError = error as AxiosError;
             const errorResponse = handleAxiosError(axiosError)
