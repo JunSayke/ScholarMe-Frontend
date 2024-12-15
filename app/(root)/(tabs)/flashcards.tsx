@@ -10,7 +10,7 @@ import {
 import { Text } from "~/components/ui/text";
 import React, { useState, useEffect } from 'react';
 import { Link } from 'expo-router';
-import { getDecks } from '@/data/api-routes';
+import { getAllDecks, getDecks } from '@/data/api-routes';
 import { FlashcardDeckReadOnlyDto } from '@/data/api';
 
 const Page = () => {
@@ -23,7 +23,7 @@ const Page = () => {
     }, []);
 
     const loadDecks = async () => {
-        const response = await getDecks()
+        const response = await getAllDecks()
         setDecks(response.data)
     }
 

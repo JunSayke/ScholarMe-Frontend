@@ -28,7 +28,7 @@ export const getDecks = () => api.get<FlashcardDeckReadOnlyDto[]>('/flashcards/d
 export const getDeckById = (deckId: string, options?: { includeFlashcards?: boolean }) => {
     const params = new URLSearchParams();
     if (options?.includeFlashcards) {
-        params.append('includeFlashcards', 'false');
+        params.append('includeFlashcards', 'true');
     }
     return api.get<FlashcardDeckReadOnlyDto>(`/flashcards/decks/${deckId}?${params.toString()}`);
 };
@@ -41,14 +41,14 @@ export const createCard = (deckId: number, cardCreateDto: FlashcardCreateDto) =>
 export const getCards = (deckId: number, options?: { includeChoices?: boolean }) => {
     const params = new URLSearchParams();
     if (options?.includeChoices) {
-        params.append('includeChoices', 'false');
+        params.append('includeChoices', 'true');
     }
     return api.get<FlashcardReadOnlyDto[]>(`/flashcards/decks/${deckId}/cards?${params.toString()}`);
 };
 export const getCardById = (cardId: number, options?: { includeChoices?: boolean }) => {
     const params = new URLSearchParams();
     if (options?.includeChoices) {
-        params.append('includeChoices', 'false');
+        params.append('includeChoices', 'true');
     }
     return api.get<FlashcardReadOnlyDto>(`flashcards/cards/${cardId}?${params.toString()}`);
 }
