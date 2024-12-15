@@ -16,7 +16,6 @@
 
 // Flashcard DTOs
 export interface FlashcardCreateDto {
-    flashcardSetId: string;
     question: string;
 }
 
@@ -35,7 +34,6 @@ export interface FlashcardUpdateDto {
 
 // FlashcardChoice DTOs
 export interface FlashcardChoiceCreateDto {
-    flashcardId: string;
     choice: string;
     isAnswer: boolean;
 }

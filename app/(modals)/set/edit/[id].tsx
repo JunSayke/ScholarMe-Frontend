@@ -3,9 +3,8 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { View, StyleSheet, ListRenderItem, FlatList, TouchableOpacity, TextInput } from 'react-native';
 import { Text } from "~/components/ui/text";
 
-import { FlashcardDeck, Flashcards, FlashcardChoices, FlashcardSetFlashcards } from '@/data/temporary';
-
 import CustomButton from "@/components/CustomButton";
+import { createCard, getCards, getChoices, getDeckById } from '@/data/api-routes';
 
 const Page = () => {
     const { id } = useLocalSearchParams<{ id: string }>();
@@ -25,22 +24,14 @@ const Page = () => {
         const loadData = async () => {
             try {
                 const numid: number = +id;
-                const fetchedSet = FlashcardDeck[numid - 1];
-                setSet(fetchedSet);
+                const fetchedSet = await getDeckById(numid);
+                setSet(fetchedSet.data);
     
-                const matchingCardIds = FlashcardSetFlashcards
-                    .filter((cardDeck) => cardDeck["FlashcardSetId"] === fetchedSet["FlashcardSetId"])
-                    .map((cardDeck) => cardDeck["FlashcardId"]);
-    
-                const fetchedCards = Flashcards.filter((card) =>
-                    matchingCardIds.includes(card["FlashcardId"])
-                );
-                setCard(fetchedCards);
+                const fetchedCards = await getCards(fetchedSet.data["id"]);
+                setCard(fetchedCards.data);
 
-                const allChoices = fetchedCards.flatMap((item) =>
-                    FlashcardChoices.filter((choice) => choice["FlashcardId"] === item["FlashcardId"])
-                );
-                setChoice(allChoices);
+                const fetchedChoices = await getChoices(1); //change this later
+                setChoice(fetchedChoices.data);
     
             } catch (error) {
                 console.error("Error loading data:", error);
@@ -51,7 +42,7 @@ const Page = () => {
     }, [id]);
 
     const onCreateCard = async () => {
-        console.log(information)
+        await createCard(set['id'], information)
         router.replace(`/(modals)/set/edit/${id}`);  
       };
 
@@ -65,16 +56,16 @@ const Page = () => {
       }
 
       const renderCardRow: ListRenderItem<Set> = ({ item }) => {
-        const cardChoices = choice?.filter((choice) => choice["FlashcardId"] === item["FlashcardId"]);
+        const cardChoices = choice?.filter((choice) => choice["flashcardId"] === item["flashcardId"]);
         const answer = cardChoices?.filter((x) => x["IsAnswer"] === true);
     
-        const isFlipped = flipStates[item["FlashcardId"]] || false; // Get flip state for this specific card
+        const isFlipped = flipStates[item["flashcardId"]] || false; // Get flip state for this specific card
     
         return (
-          <TouchableOpacity onPress={() => setFlipStates((prev) => ({ ...prev, [item["FlashcardId"]]: !prev[item["FlashcardId"]] }))}>
+          <TouchableOpacity onPress={() => setFlipStates((prev) => ({ ...prev, [item["flashcardId"]]: !prev[item["FlashcardId"]] }))}>
             {isFlipped && answer?.length > 0 ? (
               <View className="w-full h-96 p-5 my-5 bg-[#FFF] rounded-3xl flex flex-column items-center justify-center gap-10">
-                <Text className="text-3xl text-black">{answer[0]["Choice"]}</Text>
+                <Text className="text-3xl text-black">{answer[0]["choice"]}</Text>
               </View>
             ) : (
               <View className="w-full h-96 p-5 my-5 bg-[#FFF] rounded-3xl flex flex-column items-center gap-10">
@@ -82,16 +73,16 @@ const Page = () => {
                     className="px-20 mx-1"
                     title="Edit"
                     onPress={() => {
-                        router.replace(`/(modals)/set/edit/card/${item["FlashcardId"]}`);
+                        router.replace(`/(modals)/set/edit/card/${item["id"]}`);
                     }}
                 />
-                <Text className="text-3xl text-black">{item["Question"]}</Text>
+                <Text className="text-3xl text-black">{item["question"]}</Text>
                 
                 {cardChoices && (
                   <FlatList
                     data={cardChoices}
                     renderItem={renderChoiceRow}
-                    keyExtractor={(choice) => choice["FlashcardChoiceId"].toString()}
+                    keyExtractor={(choice) => choice["id"].toString()}
                   />
                 )}
               </View>
@@ -105,8 +96,8 @@ const Page = () => {
           {set && (
             <View className="h-full">
               <View className="w-full h-1/3 bg-[#3D5CFF] flex items-center justify-center">
-                <Text className="text-5xl">{set["Title"]}</Text>
-                <Text className="text-2xl">Created by: {set["UserAccount"]["Username"]}</Text>
+                <Text className="text-5xl">{set["title"]}</Text>
+                <Text className="text-2xl">Created by: {set["userAccountId"]["username"]}</Text>
                 <TextInput 
                     className="mt-1 w-11/12 rounded-3xl bg-[#FFF]"
                     placeholder="Question"

@@ -12,7 +12,7 @@ import React, { useEffect, useState } from 'react';
 import { Text } from "~/components/ui/text";
 
 import CustomButton from "@/components/CustomButton";
-import { FlashcardDeck, Flashcards, FlashcardChoices, FlashcardSetFlashcards } from '@/data/temporary';
+import { createChoice, getCardById, getChoices } from '@/data/api-routes';
 
 const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -29,11 +29,11 @@ const Page = () => {
     const loadData = async () => {
       try {
         const numid: number = +id;
-        const fetchedCard = Flashcards[numid - 1];
-        setCard(fetchedCard);
+        const fetchedCard = await getCardById(numid);
+        setCard(fetchedCard.data);
 
-        const allChoices = FlashcardChoices.filter((choice) => choice["FlashcardId"] === fetchedCard["FlashcardId"])
-        setChoices(allChoices);
+        const fetchedChoices = await getChoices(fetchedCard.data['id']) 
+        setChoices(fetchedChoices.data);
 
       } catch (error) {
         console.error("Error loading data:", error);
@@ -45,13 +45,15 @@ const Page = () => {
 
   const onCreateChoice = async () => {
     console.log(information)
+    await createChoice(card['id'], information)
     router.replace(`/(modals)/set/edit/card/${id}`);  
   };
 
   const renderChoiceRow: ListRenderItem<Set> = ({ item }) => {
     return (
         <View className='w-full h-24 bg-[#2F2F42] my-2 rounded-3xl shadow-lg elevation-5 flex items-center justify-center '>
-            <Text className='text-2xl'>{item["Choice"]}</Text>
+            <Text className='text-2xl'>{item["choice"]}</Text>
+            <Text className='text-xl'>{item["isAnswer"].toString()}</Text>
         </View>
     );
   }

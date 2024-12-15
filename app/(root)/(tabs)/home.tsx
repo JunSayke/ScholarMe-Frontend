@@ -16,8 +16,9 @@ import {Redirect, router, Link} from "expo-router";
 
 import {FlashcardDeck} from '@/data/temporary';
 import CustomButton from "@/components/CustomButton";
-import {getDecks} from "@/data/api-routes";
+import {createDeck, getDeckById, getDecks} from "@/data/api-routes";
 import {AxiosError} from "axios";
+import { getUser } from '@/components/AuthContext';
 
 const Home = () => {
     const [sets, setSets] = useState<Set[]>([]);
@@ -34,8 +35,8 @@ const Home = () => {
 
     const loadSets = async () => {
         //TODO: Sort flashcards based on account id
-        // const data = FlashcardDeck
         try {
+            const user = await getUser();
             const response = await getDecks();
             const data = response.data;
             console.log(data);
@@ -52,18 +53,19 @@ const Home = () => {
 
     const onCreateDeck = async () => {
         console.log(information)
+        await createDeck(information)
         router.replace(`/(root)/(tabs)/home`);
     };
 
     const renderSetRow: ListRenderItem<Set> = ({item}) => {
         //console.log(item["FlashcardSetId"] + ' ' + item["Title"] )
         return (
-            <Link href={`/(modals)/set/edit/${item["FlashcardSetId"]}`} asChild>
+            <Link href={`/(modals)/set/edit/${item["id"]}`} asChild>
                 <TouchableOpacity style={styles.setRow}>
                     <View style={{flexDirection: 'row', gap: 10}}>
                         <View style={{flex: 1}}>
-                            <Text style={styles.rowTitle}>{item["Title"]}</Text>
-                            <Text>{item["Description"]}</Text>
+                            <Text style={styles.rowTitle}>{item["title"]}</Text>
+                            <Text>{item["description"]}</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -126,12 +128,12 @@ const Home = () => {
                 </SafeAreaView>
 
                 <Text className="pl-5 pb-5 pt-10 text-3xl">Your Flashcards</Text>
-                <View className="w-11/12 mx-5 rounded-3xl bg-[#2F2F42] flex items-center justify-center">
+                <SafeAreaView className="mx-10 rounded-3xl bg-[#2F2F42] flex items-center justify-center">
                     <FlatList className="w-full p-5 rounded-3xl shadow-lg flex flex-row"
                               data={sets}
                               renderItem={renderSetRow}
                     />
-                </View>
+                </SafeAreaView>
 
             </SafeAreaView>
         </>
