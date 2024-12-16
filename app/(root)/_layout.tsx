@@ -4,9 +4,9 @@ import * as React from "react";
 import {useAuth} from "@/components/AuthContext";
 
 const layout = () => {
-    const {authState} = useAuth();
+    const {userSession} = useAuth();
 
-    if (authState?.authenticated !== true) {
+    if (!userSession) {
         return <Redirect href="/(auth)/signin"/>
     }
 

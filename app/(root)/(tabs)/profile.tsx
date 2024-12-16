@@ -1,13 +1,13 @@
 import React, {useState} from "react";
+import {ScrollView, TouchableOpacity, View} from "react-native";
 import {Text} from "~/components/ui/text";
 import {Button} from "~/components/ui/button";
-import {useAuth, useUser} from "@/components/AuthContext";
-import {Redirect, useRouter} from "expo-router";
+import {startSession, useAuth} from "@/components/AuthContext";
+import {useRouter} from "expo-router";
 import {ThemeToggle} from "@/components/ThemeToggle";
 import {StatusBar} from "expo-status-bar";
 import {Avatar, AvatarFallback, AvatarImage} from '~/components/ui/avatar';
 import {H1} from "@/components/ui/typography";
-import {ScrollView, View, TouchableOpacity} from "react-native";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import * as ImagePicker from 'expo-image-picker';
@@ -23,15 +23,12 @@ import {
     DialogTrigger
 } from "@/components/ui/dialog";
 
-import { updateUserAccount } from '@/data/api-routes';
-import { UserAccountUpdateDto, UserSession } from '@/data/api';
-
-import { startSession } from '@/components/AuthContext';
+import {updateUserAccount} from '@/data/api-routes';
+import {UserAccountUpdateDto, UserSession} from '@/data/api';
 
 const Profile = () => {
-    const { onLogout } = useAuth();
+    const { onLogout, userSession } = useAuth();
     const router = useRouter();
-    const userSession = useUser();
     const [image, setImage] = useState<string | null>(null);
     const [firstName, setFirstName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
@@ -91,11 +88,11 @@ const Profile = () => {
     };
 
     if (!userSession) {
-        return <Redirect href={"/(auth)/signin"} />;
+        return null;
     }
 
     return (
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <ScrollView>
             <View className="flex-row justify-center items-center">
                 <H1 className="text-center me-3">Profile</H1>
                 <ThemeToggle />
@@ -129,7 +126,7 @@ const Profile = () => {
                     <Text>Save Changes</Text>
                 </Button>
             </View>
-            <View className={"max-w-xs mx-auto gap-y-5"}>
+            <View className={"max-w-xs mx-auto gap-y-5 mb-24"}>
                 <Dialog>
                     <DialogTrigger asChild>
                         <Button>

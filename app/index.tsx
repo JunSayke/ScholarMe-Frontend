@@ -31,7 +31,7 @@ const DATA = [
 ]
 
 const Index = () => {
-    const { authState } = useAuth();
+    const { userSession } = useAuth();
     const router = useRouter();
 
     const handleSignUp = () => {
@@ -42,7 +42,7 @@ const Index = () => {
         router.push("/(auth)/signin");
     };
 
-    if (authState?.authenticated) {
+    if (userSession) {
         return <Redirect href="/(root)/(tabs)/home" />;
     }
 

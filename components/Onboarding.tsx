@@ -38,7 +38,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, onSignUp, onSignIn }) => 
                 renderItem={({ item, index }) => (
                     <View style={{ width }} className="p-4">
                         <View className="items-center mt-8">
-                            <Image source={item.image} className="size-80 my-8" />
+                            <Image source={item.image} className="size-60 my-8" />
                             <Text className="text-center text-3xl font-bold mb-4">
                                 {item.title}
                             </Text>

@@ -3,9 +3,9 @@ import {Redirect, Stack} from "expo-router";
 import {useAuth} from "@/components/AuthContext";
 
 const layout = () => {
-    const {authState} = useAuth();
+    const {userSession} = useAuth();
 
-    if (authState?.authenticated) {
+    if (userSession) {
         return <Redirect href="/(root)/(tabs)/home"/>
     }
 

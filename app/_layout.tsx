@@ -27,7 +27,6 @@ export {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-    const {authState} = useAuth();
     const {colorScheme, setColorScheme, isDarkColorScheme} = useColorScheme();
     const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
 
@@ -64,7 +63,10 @@ export default function RootLayout() {
         <>
             <AuthProvider>
                 <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-                    <SafeAreaView style={{ flex: 1, backgroundColor: isDarkColorScheme ? NAV_THEME.dark.background : NAV_THEME.light.background }}>
+                    <SafeAreaView style={{
+                        flex: 1,
+                        backgroundColor: isDarkColorScheme ? NAV_THEME.dark.background : NAV_THEME.light.background
+                    }}>
                         <StatusBar style={isDarkColorScheme ? "light" : "dark"}/>
                         <Stack>
                             <Stack.Screen name="index" options={{headerShown: false}}/>
@@ -90,7 +92,7 @@ export default function RootLayout() {
                     </SafeAreaView>
                 </ThemeProvider>
             </AuthProvider>
-            <PortalHost />
+            <PortalHost/>
         </>
     );
 }

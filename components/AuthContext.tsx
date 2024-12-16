@@ -5,7 +5,7 @@ import {getItem, removeItem, setItem} from '@/lib/storage/storage';
 import {UserAccountSignInDto, UserAccountSignUpDto, UserSession} from '@/data/api';
 
 interface AuthProps {
-    authState?: { token: string | null; authenticated: boolean | null };
+    userSession?: UserSession | null;
     onRegister?: (userSignUpDto: UserAccountSignUpDto) => Promise<any>;
     onLogin?: (userSignInDto: UserAccountSignInDto) => Promise<any>;
     onLogout?: () => Promise<any>;
@@ -33,29 +33,8 @@ export const useAuth = () => {
     return useContext(AuthContext);
 };
 
-export const useUser = (): UserSession | null => {
-    const [userSession, setUserSession] = useState<UserSession | null>(null);
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            const user = await getUser();
-            setUserSession(user);
-        };
-
-        fetchUser();
-    }, []);
-
-    return userSession;
-};
-
 export const AuthProvider = ({children}: any) => {
-    const [authState, setAuthState] = useState<{
-        token: string | null;
-        authenticated: boolean | null;
-    }>({
-        token: null,
-        authenticated: null,
-    });
+    const [userSession, setUserSession] = useState<UserSession | null>(null);
 
     useEffect(() => {
         const loadToken = async () => {
@@ -66,10 +45,7 @@ export const AuthProvider = ({children}: any) => {
             if (token) {
                 api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-                setAuthState({
-                    token: token,
-                    authenticated: true,
-                });
+                setUserSession(user)
             }
         };
         loadToken();
@@ -86,14 +62,10 @@ export const AuthProvider = ({children}: any) => {
 
         console.log('Authenticated:', user);
 
-        setAuthState({
-            token: user.accessToken,
-            authenticated: true,
-        });
+        setUserSession(user);
 
         // Set the token in the axios headers
         api.defaults.headers.common['Authorization'] = `Bearer ${user.accessToken}`;
-        console.log(api.defaults.headers.common['Authorization'])
 
         await startSession(user)
 
@@ -108,18 +80,14 @@ export const AuthProvider = ({children}: any) => {
         api.defaults.headers.common['Authorization'] = '';
 
         // Reset auth state
-        setAuthState({
-            token: null,
-            authenticated: false,
-        });
+        setUserSession(null)
     };
 
     const value = {
         onRegister: register,
         onLogin: login,
         onLogout: logout,
-        authState,
-
+        userSession,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
