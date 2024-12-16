@@ -23,8 +23,9 @@ import {
     DialogTrigger
 } from "@/components/ui/dialog";
 
-import {updateUserAccount} from '@/data/api-routes';
-import {UserAccountUpdateDto, UserSession} from '@/data/api';
+import {updateUserAccount, updateUserPassword} from '@/data/api-routes';
+import {UserAccountChangePasswordDto, UserAccountUpdateDto, UserSession} from '@/data/api';
+import { Ionicons } from '@expo/vector-icons';
 
 const Profile = () => {
     const { onLogout, userSession } = useAuth();
@@ -33,6 +34,32 @@ const Profile = () => {
     const [firstName, setFirstName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
+
+    //Handling change password
+    const [showOldPassword, setShowOldPassword] = useState(true);
+    const [showNewPassword, setShowNewPassword] = useState(true);
+    const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(true);
+    const [oldPassword, setOldPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmNewPassword, setConfirmNewPassword] = useState("");
+
+    const handleChangePassword = async () => {
+        try {
+            const updatedPassword: UserAccountChangePasswordDto = {
+                oldPassword: "",
+                newPassword: ""
+            };
+
+            if (newPassword) updatedPassword.newPassword = newPassword === confirmNewPassword ? newPassword : '';
+            if (oldPassword) updatedPassword.oldPassword = oldPassword;
+
+            console.log(updatedPassword);
+            const response = await updateUserPassword(updatedPassword);
+            console.log(response)
+        } catch (error) {
+            console.error('Failed to change password: ', error)
+        }
+    }
 
     const handleUpdateProfile = async (updatedProfile: UserAccountUpdateDto, avatar?: File) => {
         try {
@@ -139,23 +166,65 @@ const Profile = () => {
                             <DialogDescription>
                                 <View className="w-80">
                                     <View className={"gap-y-2"}>
-                                        <Label>Old Password</Label>
-                                        <Input placeholder="8+ Characters" />
+                                    <Label>Old Password</Label>
+                                        <View className="flex flex-row items-center">
+                                            <Input 
+                                                className="w-11/12"
+                                                placeholder="8+ Characters"
+                                                secureTextEntry={showOldPassword}
+                                                onChangeText={setOldPassword}
+                                            />
+                                            <TouchableOpacity onPress={() => setShowOldPassword(!showOldPassword)}>
+                                                <Ionicons
+                                                    name={showOldPassword ? "eye-off" : "eye"}
+                                                    size={24}
+                                                    color="black"
+                                                />
+                                            </TouchableOpacity>
+                                        </View>
                                     </View>
                                     <View className={"gap-y-2"}>
                                         <Label>New Password</Label>
-                                        <Input placeholder="8+ Characters" />
+                                        <View className="flex flex-row items-center">
+                                            <Input 
+                                                className="w-11/12"
+                                                placeholder="8+ Characters"
+                                                secureTextEntry={showNewPassword}
+                                                onChangeText={setNewPassword}
+                                            />
+                                            <TouchableOpacity onPress={() => setShowNewPassword(!showNewPassword)}>
+                                                <Ionicons
+                                                    name={showNewPassword ? "eye-off" : "eye"}
+                                                    size={24}
+                                                    color="black"
+                                                />
+                                            </TouchableOpacity>
+                                        </View>
                                     </View>
                                     <View className={"gap-y-2"}>
                                         <Label>Confirm Password</Label>
-                                        <Input placeholder="8+ Characters" />
+                                        <View className="flex flex-row items-center">
+                                            <Input 
+                                                className="w-11/12"
+                                                placeholder="8+ Characters"
+                                                secureTextEntry={showConfirmNewPassword}
+                                                onChangeText={setConfirmNewPassword}
+                                            />
+                                            <TouchableOpacity onPress={() => setShowConfirmNewPassword(!showConfirmNewPassword)}>
+                                                <Ionicons
+                                                    name={showConfirmNewPassword ? "eye-off" : "eye"}
+                                                    size={24}
+                                                    color="black"
+                                                />
+                                            </TouchableOpacity>
+                                        </View>
                                     </View>
                                 </View>
                             </DialogDescription>
                         </DialogHeader>
                         <DialogFooter>
                             <DialogClose asChild>
-                                <Button onPress={() => {}}>
+                                <Button onPress={() => {handleChangePassword()}}>
                                     <Text>Submit</Text>
                                 </Button>
                             </DialogClose>
