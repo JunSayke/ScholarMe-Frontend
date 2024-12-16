@@ -80,7 +80,7 @@ export default function RootLayout() {
                                           }}/>
                             <Stack.Screen name="(modals)/set/edit/[id]"
                                           options={{
-                                              presentation: 'modal',
+                                              presentation: 'card',
                                               title: ''
                                           }}/>
                             <Stack.Screen name="(modals)/set/edit/card/[id]"

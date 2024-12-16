@@ -4,7 +4,9 @@ import { View, StyleSheet, ListRenderItem, FlatList, TouchableOpacity, TextInput
 import { Text } from "~/components/ui/text";
 
 import CustomButton from "@/components/CustomButton";
-import { createCard, deleteDeck, getCards, getChoices, getDeckById, updateDeck } from '@/data/api-routes';
+import { createCard, deleteDeck, getCards, getDeckById, updateDeck } from '@/data/api-routes';
+import {Collapse,CollapseHeader, CollapseBody} from 'accordion-collapse-react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 const Page = () => {
     const { id } = useLocalSearchParams<{ id: string }>();
@@ -23,7 +25,6 @@ const Page = () => {
 
     const [editDeck, setEditDeck] = useState<Boolean>(false);
 
-    //REWORK EVERYTHING ONCE CODE IS RELEASED
     useEffect(() => {
         if (!id) return;
     
@@ -60,7 +61,6 @@ const Page = () => {
       router.replace('/(root)/(tabs)/home');  
     }
  
-    //Rework code once database is released
     const renderChoiceRow: ListRenderItem<Set> = ({ item }) => {
         return (
             <View style={{ flexDirection: 'row', gap: 10 }}>
@@ -77,7 +77,7 @@ const Page = () => {
         return (
           <TouchableOpacity onPress={() => setFlipStates((prev) => ({ ...prev, [item["id"]]: !prev[item["id"]] }))}>
             {isFlipped && answers?.length > 0 ? (
-              <View className="w-full h-96 p-5 my-5 bg-[#FFF] rounded-3xl flex flex-column items-center justify-center gap-10">
+              <View className="w-full h-96 p-5 my-5 bg-[#F0F0FF] rounded-3xl flex flex-column items-center justify-center gap-10">
                 {answers.map((answer, index) => (
                 <Text key={index} className="text-3xl text-black">
                   {answer["choice"]}
@@ -85,7 +85,7 @@ const Page = () => {
               ))}
               </View>
             ) : (
-              <View className="w-full h-96 p-5 my-5 bg-[#FFF] rounded-3xl flex flex-column items-center gap-10">
+              <View className="w-full h-96 p-5 my-5 bg-[#F0F0FF] rounded-3xl flex flex-column items-center gap-10">
                 <CustomButton
                     className="px-20 mx-1"
                     title="Edit"
@@ -109,18 +109,20 @@ const Page = () => {
       };
     
       return (
-        <View style={styles.container} className='bg-[#1F1F39]'>
+        <View style={styles.container}>
           {set && (
             <View className="h-full">
               <View className="w-full p-1 bg-[#3D5CFF] flex items-center justify-center">
-                <View className='w-full p-5 flex items-start'>
-                  <Text className='text-white'>Edit Deck</Text>
-                  <Switch 
-                    onValueChange={() => setEditDeck(!editDeck)}
-                    value={editDeck}
-                  />
+                <View className='w-full flex flex-row items-center justify-between'>
+                  <Text className="text-4xl max-w-xs text-white">{set["title"]}</Text>
+                  <View className='flex items-center'>
+                    <Text className='text-white'>Edit</Text>
+                    <Switch 
+                      onValueChange={() => setEditDeck(!editDeck)}
+                      value={editDeck}
+                    />
+                  </View>
                 </View>
-                <Text className="text-5xl text-white">{set["title"]}</Text>
                 {editDeck ? (
                   <View className='w-full flex items-center'>
                     <TextInput 
@@ -145,18 +147,31 @@ const Page = () => {
                 ):(
                   <View className='w-full flex items-center'>
                     <Text className="text-2xl text-white">{set["description"]}</Text>
-                    <Text className="text-xl pt-5 text-white">Create question:</Text>
-                    <TextInput 
-                      className="mt-1 w-11/12 p-1 rounded-3xl bg-[#FFF]"
-                      placeholder="Question"
-                      value={information.question}
-                      onChangeText={(text) => setInformation({ ...information, question: text })}
-                    />
-                    <CustomButton
-                        className="h-12 px-20 my-1"
-                        title="Add Card"
-                        onPress={onCreateCard}
-                    />
+                    <Collapse>
+                     <CollapseHeader className="pt-5 flex flex-row items-center">
+                      <Text className="text-xl text-white">Create question: </Text>
+                      <Ionicons
+                          name={"chevron-down"}
+                          size={24}
+                          color="white"
+                      />
+                     </CollapseHeader>
+                     <CollapseBody>
+                     <TextInput 
+                        className="mt-1 w-80 p-1 rounded-3xl bg-[#FFF]"
+                        placeholder="Question"
+                        multiline
+                        numberOfLines={2}
+                        value={information.question}
+                        onChangeText={(text) => setInformation({ ...information, question: text })}
+                      />
+                      <CustomButton
+                          className="h-12 px-20 my-1"
+                          title="Add Card"
+                          onPress={onCreateCard}
+                      />
+                    </CollapseBody>
+                     </Collapse>
                   </View>
                 )}
               </View>

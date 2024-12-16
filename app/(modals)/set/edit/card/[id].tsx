@@ -12,10 +12,12 @@ import {
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Text } from "~/components/ui/text";
+import {Collapse,CollapseHeader, CollapseBody} from 'accordion-collapse-react-native';
 
 import CustomButton from "@/components/CustomButton";
 import { createChoice, deleteCard, deleteChoice, getCardById, getChoices, updateCard, updateChoice } from '@/data/api-routes';
 import { icons } from '@/constants';
+import { Ionicons } from '@expo/vector-icons';
 
 const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -89,9 +91,13 @@ const Page = () => {
     const editEnabled= editStates[item["id"]] || false;
 
     return (
-      <View className='w-full flex flex-row justify-between items-center bg-[#2F2F42]'>
+      <View className='w-full flex flex-row justify-between items-center'>
         <TouchableOpacity className="p-1" onPress={() => setEditStates((prev) => ({ ...prev, [item["id"]]: !prev[item["id"]] }))}>
-          <Image source={icons.edit} className="mb-8"/>
+          <Ionicons
+            name='pencil'
+            size={30}
+            color="white"
+          />
         </TouchableOpacity>
         {/* <CustomButton title='Edit Choice' className='h-10 w-40' onPress={() => setEditStates((prev) => ({ ...prev, [item["id"]]: !prev[item["id"]] }))}/> */}
         {editEnabled ? (
@@ -123,7 +129,11 @@ const Page = () => {
           </View>
         )}
         <TouchableOpacity className="p-1" onPress={() => onDeleteChoice(item['id'])}>
-          <Image source={icons.trash} className="mb-8"/>
+        <Ionicons
+            name='trash'
+            size={30}
+            color="white"
+          />
         </TouchableOpacity>
         {/* <CustomButton title='Delete Choice' className='bg-[#FF0000] h-10 w-40' onPress={() => onDeleteChoice(item['id'])}/> */}
       </View>
@@ -131,18 +141,21 @@ const Page = () => {
   }
 
   return (
-    <View style={styles.container} className='bg-[#1F1F39]'>
+    <View style={styles.container}>
       {card && (
         <View className="h-full">
           <View className="w-full p-5 bg-[#3D5CFF] flex items-center">
-          <View className='w-full p-5 flex items-start'>
-            <Text className='text-white'>Edit Question</Text>
-            <Switch 
-              onValueChange={() => setEditCard(!editCard)}
-              value={editCard}
-            />
+          <View className='w-full flex flex-row items-center justify-between'>
+            <Text className="text-3xl rounded-3xl max-w-xs text-white">{card["question"]}</Text>
+            <View className='flex items-center'>
+              <Text className='text-white'>Edit</Text>
+              <Switch 
+                onValueChange={() => setEditCard(!editCard)}
+                value={editCard}
+              />
+            </View>
           </View>
-          <Text className="text-3xl rounded-3xl text-white">{card["question"]}</Text>
+          
           { editCard ? (
             <View className='w-full p-5 flex items-center'>
               <TextInput
@@ -181,7 +194,7 @@ const Page = () => {
           )}
             
           </View>
-          <View className='m-5'>
+          <View className='m-5 rounded-xl bg-[#2F2F42]'>
             <FlatList data={choices} renderItem={renderChoiceRow} />
           </View>
           

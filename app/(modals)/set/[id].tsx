@@ -46,7 +46,7 @@ const Page = () => {
         return (
           <TouchableOpacity onPress={() => setFlipStates((prev) => ({ ...prev, [item["id"]]: !prev[item["id"]] }))}>
             {isFlipped && answers?.length > 0 ? (
-              <View className="w-full h-96 p-5 my-5 bg-[#FFF] rounded-3xl flex flex-column items-center justify-center gap-10">
+              <View className="w-full h-96 p-5 my-5 bg-[#F0F0FF] rounded-3xl flex flex-column items-center justify-center gap-10">
                 {answers.map((answer, index) => (
                 <Text key={index} className="text-3xl text-black">
                   {answer["choice"]}
@@ -54,7 +54,7 @@ const Page = () => {
               ))}
               </View>
             ) : (
-              <View className="w-full h-96 p-5 my-5 bg-[#FFF] rounded-3xl flex flex-column items-center justify-center gap-10">
+              <View className="w-full h-96 p-5 my-5 bg-[#F0F0FF] rounded-3xl flex flex-column items-center justify-center gap-10">
                 <Text className="text-3xl text-black">{item["question"]}</Text>
     
                 {item["choices"] && (
@@ -75,7 +75,7 @@ const Page = () => {
           {deck && (
             <View className="h-full">
               <View className="w-full h-1/6 bg-[#3D5CFF] flex items-center justify-center">
-                <Text className="text-5xl">{deck["title"]}</Text>
+                <Text className="text-5xl text-center text-white">{deck["title"]}</Text>
                 {/* <Text className="text-2xl">Created by: {set["userAccount"]["username"]}</Text> */}
               </View>
               <FlatList data={cards} renderItem={renderCardRow} />

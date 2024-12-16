@@ -80,7 +80,7 @@ const Home = () => {
 
     return (
         <>
-            <SafeAreaView className="h-full w-full bg-[#1F1F39]">
+            <SafeAreaView className="h-full w-full">
                 <ScrollView style={{flex: 1}}>
                 <View className="w-full h-1/4 bg-[#3D5CFF] flex flex-row items-center justify-between">
                     <View className="pl-16">
