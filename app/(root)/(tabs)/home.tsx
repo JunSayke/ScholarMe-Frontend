@@ -18,8 +18,10 @@ import CustomButton from "@/components/CustomButton";
 import {createDeck, getDeckById, getDecks} from "@/data/api-routes";
 import {AxiosError} from "axios";
 import { getUser } from '@/components/AuthContext';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const Home = () => {
+    const [user, setUser] = useState<UserAccountReadOnlyDto>([]);
     const [sets, setSets] = useState<Set[]>([]);
     const [createDropdownState, setCreateDropdownState] = useState(false);
     const [information, setInformation] = useState({
@@ -40,10 +42,11 @@ const Home = () => {
     const loadSets = async () => {
         //TODO: Sort flashcards based on account id
         try {
-            const user = await getUser();
+            const userSession = await getUser();
             const response = await getDecks();
             const data = response.data;
-            console.log(data);
+            console.log(userSession?.user);
+            setUser(userSession.user)
             setSets(data)
         } catch (error) {
             const axiosError = error as AxiosError;
@@ -82,16 +85,21 @@ const Home = () => {
         <>
             <SafeAreaView className="h-full w-full">
                 <ScrollView style={{flex: 1}}>
-                <View className="w-full h-1/4 bg-[#3D5CFF] flex flex-row items-center justify-between">
+                <View className="w-full h-1/2 bg-[#3D5CFF] flex flex-row items-center justify-between">
                     <View className="pl-16">
-                        <Text className="font-extrabold text-7xl text-white">Hi!</Text>
+                        <Text className="font-extrabold text-4xl text-white">Hi {user['firstName']}!</Text>
                         <Text className="font-extrabold text-white">Let's start learning</Text>
                     </View>
                     <View className="pr-10">
                         <TouchableOpacity onPress={() =>
                             router.push('/(root)/(tabs)/profile')
                         }>
-                            <Image source={icons.icondefault} className="mb-8"/>
+                            <Avatar alt="User Avatar" className={"size-16 mx-auto mt-10 mb-5"}>
+                                <AvatarImage source={ user['avatarPath'] } />
+                                <AvatarFallback>
+                                    <Image source={icons.icondefault} />
+                                </AvatarFallback>
+                            </Avatar>
                         </TouchableOpacity>
                     </View>
                 </View>

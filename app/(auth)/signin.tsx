@@ -42,12 +42,12 @@ const Signin = () => {
              
             <View style={styles.boxContainer}>
                 <View style={styles.inputContainer}>
-                    <Label style={styles.label}>Your Email</Label>
+                    <Label style={styles.label}>Your Username</Label>
                     <Input
                         value={username}
                         onChangeText={setUsername}
                         style={styles.input}
-                        placeholder="Enter your email"
+                        placeholder="Enter your Username"
                         placeholderTextColor="#B0B0B0"
                     />
                 </View>
@@ -95,7 +95,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'flex-start',
         padding: 20,
-        backgroundColor: '#1F1F39',
         paddingTop: 50,
     },
     title: {

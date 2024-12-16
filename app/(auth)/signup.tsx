@@ -1,4 +1,4 @@
-import { View, ActivityIndicator, StyleSheet, SafeAreaView, TouchableOpacity } from "react-native";
+import { View, ActivityIndicator, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView } from "react-native";
 import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,9 @@ import { Ionicons } from '@expo/vector-icons';
 const Signup = () => {
     const { onRegister } = useAuth();
     const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
@@ -22,7 +25,7 @@ const Signup = () => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
  
     const handleSignUp = async () => {
-        const userSignUpDto: UserAccountSignUpDto = { username, password };
+        const userSignUpDto: UserAccountSignUpDto = { username, email, password, firstName, lastName };
         if (password !== confirmPassword) {
             setErrorMessage("Passwords do not match.");
             return;
@@ -44,77 +47,111 @@ const Signup = () => {
     };
  
     return (
-        <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Sign Up</Text>
-   
-             
-            <View style={styles.boxContainer}>
-                <View style={styles.inputContainer}>
-                    <Label style={styles.label}>Your Email</Label>
-                    <Input
-                        value={username}
-                        onChangeText={setUsername}
-                        style={styles.input}
-                        placeholder="Enter your email"
-                        placeholderTextColor="#B0B0B0"
-                    />
-                </View>
- 
-                <View style={styles.inputContainer}>
-                    <Label style={styles.label}>Password</Label>
-                    <View style={styles.passwordContainer}>
+        <ScrollView>
+            <SafeAreaView style={styles.container}>
+                <Text style={styles.title}>Sign Up</Text>
+    
+                <View style={styles.boxContainer}>
+                    <View style={styles.inputContainer}>
+                        <Label style={styles.label}>Your Username</Label>
                         <Input
-                            value={password}
-                            onChangeText={setPassword}
-                            style={styles.fixedInput}
-                            placeholder="Enter your password"
+                            value={username}
+                            onChangeText={setUsername}
+                            style={styles.input}
+                            placeholder="Enter your username"
                             placeholderTextColor="#B0B0B0"
-                            secureTextEntry={!showPassword}
                         />
-                        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                            <Ionicons
-                                name={showPassword ? "eye-off" : "eye"}
-                                size={24}
-                                color="white"
-                                style={styles.eyeIcon}
+                    </View>
+
+                    <View style={styles.inputContainer}>
+                        <Label style={styles.label}>Your Email</Label>
+                        <Input
+                            value={email}
+                            onChangeText={setEmail}
+                            style={styles.input}
+                            placeholder="Enter your email"
+                            placeholderTextColor="#B0B0B0"
+                        />
+                    </View>
+
+                    <View style={styles.inputContainer}>
+                        <Label style={styles.label}>Your First Name</Label>
+                        <Input
+                            value={firstName}
+                            onChangeText={setFirstName}
+                            style={styles.input}
+                            placeholder="Enter your first name"
+                            placeholderTextColor="#B0B0B0"
+                        />
+                    </View>
+
+                    <View style={styles.inputContainer}>
+                        <Label style={styles.label}>Your Last Name</Label>
+                        <Input
+                            value={lastName}
+                            onChangeText={setLastName}
+                            style={styles.input}
+                            placeholder="Enter your last name"
+                            placeholderTextColor="#B0B0B0"
+                        />
+                    </View>
+    
+                    <View style={styles.inputContainer}>
+                        <Label style={styles.label}>Password</Label>
+                        <View style={styles.passwordContainer}>
+                            <Input
+                                value={password}
+                                onChangeText={setPassword}
+                                style={styles.fixedInput}
+                                placeholder="Enter your password"
+                                placeholderTextColor="#B0B0B0"
+                                secureTextEntry={!showPassword}
                             />
-                        </TouchableOpacity>
+                            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                                <Ionicons
+                                    name={showPassword ? "eye-off" : "eye"}
+                                    size={24}
+                                    color="white"
+                                    style={styles.eyeIcon}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+    
+                    <View style={styles.inputContainer}>
+                        <Label style={styles.label}>Confirm Password</Label>
+                        <View style={styles.passwordContainer}>
+                            <Input
+                                value={confirmPassword}
+                                onChangeText={setConfirmPassword}
+                                style={styles.fixedInput}
+                                placeholder="Confirm your password"
+                                placeholderTextColor="#B0B0B0"
+                                secureTextEntry={!showConfirmPassword}
+                            />
+                            <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+                                <Ionicons
+                                    name={showConfirmPassword ? "eye-off" : "eye"}
+                                    size={24}
+                                    color="white"
+                                    style={styles.eyeIcon}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+    
+                    {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
+    
+                    <Button onPress={handleSignUp} style={styles.button} disabled={loading}>
+                        {loading ? <ActivityIndicator color="#fff" /> :                    <Text style={styles.buttonText}>Sign Up</Text>}
+                    </Button>
+    
+                    <View style={styles.linkContainer}>
+                        <Text style={styles.link}>Already have an account? <Link href={"/(auth)/signin"}>Log In</Link></Text>
                     </View>
                 </View>
- 
-                <View style={styles.inputContainer}>
-                    <Label style={styles.label}>Confirm Password</Label>
-                    <View style={styles.passwordContainer}>
-                        <Input
-                            value={confirmPassword}
-                            onChangeText={setConfirmPassword}
-                            style={styles.fixedInput}
-                            placeholder="Confirm your password"
-                            placeholderTextColor="#B0B0B0"
-                            secureTextEntry={!showConfirmPassword}
-                        />
-                        <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
-                            <Ionicons
-                                name={showConfirmPassword ? "eye-off" : "eye"}
-                                size={24}
-                                color="white"
-                                style={styles.eyeIcon}
-                            />
-                        </TouchableOpacity>
-                    </View>
-                </View>
- 
-                {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
- 
-                <Button onPress={handleSignUp} style={styles.button} disabled={loading}>
-                    {loading ? <ActivityIndicator color="#fff" /> :                    <Text style={styles.buttonText}>Sign Up</Text>}
-                </Button>
- 
-                <View style={styles.linkContainer}>
-                    <Text style={styles.link}>Already have an account? <Link href={"/(auth)/signin"}>Log In</Link></Text>
-                </View>
-            </View>
-        </SafeAreaView>
+            </SafeAreaView>
+        </ScrollView>
     );
 };
  
@@ -124,7 +161,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'flex-start',
         padding: 20,
-        backgroundColor: '#1F1F39',
         paddingTop: 50,
         fontSize: 22
     },
