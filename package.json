@@ -31,6 +31,7 @@
     "@rn-primitives/label": "^1.1.0",
     "@rn-primitives/slot": "^1.1.0",
     "@rn-primitives/types": "^1.1.0",
+    "accordion-collapse-react-native": "^1.1.1",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

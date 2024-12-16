@@ -12,7 +12,7 @@ import { Link } from "expo-router";
 import { Ionicons } from '@expo/vector-icons';
  
 const Signup = () => {
-    const { onSignUp } = useAuth();
+    const { onRegister } = useAuth();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -28,7 +28,7 @@ const Signup = () => {
             return;
         }
         try {
-            const response = await onSignUp!(userSignUpDto);
+            const response = await onRegister!(userSignUpDto);
             console.log("Sign up successfully: ", response.response?.data);
         } catch (error) {
             const axiosError = error as AxiosError;

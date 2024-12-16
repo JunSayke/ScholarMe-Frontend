@@ -48,10 +48,10 @@ const Onboarding: React.FC<OnboardingProps> = ({ data, onSignUp, onSignIn }) => 
                             {index === data.length - 1 && (
                                 <View className="mt-8">
                                     <TouchableOpacity className="bg-blue-500 p-4 rounded-full w-80 mb-4" onPress={onSignIn}>
-                                        <Text className="text-white text-center">Sign Up</Text>
+                                        <Text className="text-white text-center">Sign In</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity className="bg-gray-500 p-4 w-80 rounded-full" onPress={onSignUp}>
-                                        <Text className="text-white text-center">Sign In</Text>
+                                        <Text className="text-white text-center">Sign Up</Text>
                                     </TouchableOpacity>
                                 </View>
                             )}
