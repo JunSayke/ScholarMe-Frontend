@@ -21,6 +21,10 @@ export const getUser = async (): Promise<UserSession | null> => {
 };
 
 export const startSession = async (user: UserSession): Promise<void> => {
+    if (user.user.avatarPath) {
+        user.user.avatarPath = `http://localhost:5000/${user.user.avatarPath.replace(/\\/g, '/')}`;
+    }
+    console.log("USER AVATAR: ", user.user.avatarPath)
     await setItem(SESSION_KEY, JSON.stringify(user));
 }
 

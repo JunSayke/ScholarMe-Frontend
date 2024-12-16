@@ -31,12 +31,16 @@ export const signUp = (userSignUpDto: UserAccountSignUpDto) => api.post<UserSess
 export const updateAvatar = (profileAvatarDto: ProfileAvatarDto) => api.post<ProfileAvatarReadOnlyDto>('/useraccounts/update-avatar', profileAvatarDto);
 
 // Edit Profile
-export const updateUserAccount = (userAccountDto: UserAccountUpdateDto, avatar?: File) => {
-    console.log(avatar);
+export const updateUserAccount = (userAccountDto: UserAccountUpdateDto) => {
     const formData = new FormData();
-    formData.append('userAccountDto', JSON.stringify(userAccountDto));
-    if (avatar) {
-        formData.append('avatar', avatar);
+    formData.append('email', userAccountDto.email || '');
+    formData.append('firstName', userAccountDto.firstName || '');
+    formData.append('lastName', userAccountDto.lastName || '');
+    formData.append('phoneNumber', userAccountDto.phoneNumber || '');
+
+    if (userAccountDto.avatar) {
+        formData.append('avatar', userAccountDto.avatar);
+        console.log("AVATAR FILE:", userAccountDto.avatar);
     }
 
     return api.put<UserAccountReadOnlyDto>('/useraccounts/edit-profile', formData, {

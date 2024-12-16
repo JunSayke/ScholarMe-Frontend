@@ -111,6 +111,7 @@ export interface UserAccountUpdateDto {
     firstName?: string;
     lastName?: string;
     phoneNumber?: string;
+    avatar?: File;
 }
 
 // ProfileAvatarDto

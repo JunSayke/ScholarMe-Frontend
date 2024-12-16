@@ -61,9 +61,9 @@ const Profile = () => {
         }
     }
 
-    const handleUpdateProfile = async (updatedProfile: UserAccountUpdateDto, avatar?: File) => {
+    const handleUpdateProfile = async (updatedProfile: UserAccountUpdateDto) => {
         try {
-            const updatedUser = await updateUserAccount(updatedProfile, avatar);
+            const updatedUser = await updateUserAccount(updatedProfile);
             console.log('Profile updated successfully:', updatedUser);
 
             const newUserSession: UserSession = {
@@ -111,7 +111,8 @@ const Profile = () => {
         if (firstName) updatedProfile.firstName = firstName;
         if (lastName) updatedProfile.lastName = lastName;
 
-        await handleUpdateProfile(updatedProfile, image ? await uriToFile(image, 'avatar.jpg') : undefined);
+        if (image) updatedProfile.avatar = await uriToFile(image, 'avatar.jpg');
+        await handleUpdateProfile(updatedProfile);
     };
 
     if (!userSession) {
